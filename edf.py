@@ -43,7 +43,7 @@ class my_param_struct(ct.Structure):					# this structure contains all the relev
 class my_hdr_struct(ct.Structure):					# this structure contains all the relevant EDF header info and will be filled when calling the function edf_open_file_readonly()
 
 	_fields_ = [("handle", ct.c_int),				# a handle (identifier) used to distinguish the different files
-		("filetype", ct.c_int),					# 0: EDF, 1: EDFplus, 2: BDF, 3: BDFplus, a negative number means an error
+		("filetype", ct.c_int),					# 0 : EDF, 1 : EDFplus, 2 : BDF, 3 : BDFplus.  Negative numbers indicate errors.
 		("edfsignals", ct.c_int),				# number of EDF signals in the file, annotation channels are NOT included
 		("file_duration", ct.c_longlong),			# duration of the file expressed in units of 100 nanoSeconds
 		("startdate_day", ct.c_int),       
@@ -96,16 +96,25 @@ class edf_file(my_hdr_struct):
 
 
 	def read_physical_samples(self, channels, start, size):
-		channels = np.asarray(channels, dtype=int)
+
+		channels = np.asarray(channels)
+
+		if channels.dtype == int:	pass
+		else:				print "edf_file : channels.dtype has to be integer."
+
 		data = np.zeros((channels.size*SIZE), float)
 		lib.read_physical_samples(self.handle, channels.ctypes.data_as(ct.POINTER(ct.c_int)), channels.size, start, size, data.ctypes.data_as(ct.POINTER(ct.c_double)))
+
 		return data
 
 
 
 
+
 lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(my_hdr_struct)]
+
 lib.read_physical_samples.argtypes = [ct.c_int, ct.POINTER(ct.c_int), ct.c_int, ct.c_int, ct.c_int, ct.POINTER(ct.c_double)]
+
 lib.edf_close.argtypes = [ct.c_int]
 lib.edf_close.restype = ct.c_int
 
@@ -121,19 +130,38 @@ lib.free_params.argtypes = [ct.POINTER(my_param_struct)]
 
 if __name__ == "__main__":
 
-	from pylab import show, plot
+	import pylab
 
-	f = edf_file(filename="/home/jus/Data/carus/edfs/A0001673.edf")
+	f = edf_file(filename="example/brux2_reduced.edf")
 	
 
-	START = 500000
+	START = 0
 	SIZE = 10000
 	ch = [0]
+
 	data = f.read_physical_samples(ch, START, SIZE)
 
-	print data
 
-	plot(data)
-	show()
+	pylab.plot(data)
+	pylab.show()
+
 
 	del f
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

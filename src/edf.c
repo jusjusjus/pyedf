@@ -47,13 +47,10 @@ void free_params(struct my_param_struct *paramslist)
 
 
 
-
-
-
-
 void read_my_header(char *filename, struct my_hdr_struct *myhdr)
 {
 	struct edf_hdr_struct hdr;
+
 	if( edfopen_file_readonly(filename, &hdr, EDFLIB_READ_ALL_ANNOTATIONS) )	// Open the file and read out the hdr info.
 	{
 		switch(hdr.filetype)
