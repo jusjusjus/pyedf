@@ -136,11 +136,12 @@ if __name__ == "__main__":
 	
 
 	START = 0
-	SIZE = 10000
+	SIZE = 100000
 	ch = [0]
 
 	data = f.read_physical_samples(ch, START, SIZE)
 
+	print data
 
 	pylab.plot(data)
 	pylab.show()
