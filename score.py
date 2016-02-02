@@ -38,12 +38,10 @@ class score(object):
 			self.interpret_states()
 
 
-
 	def add_state(self, annotator, function):
 		self.interpreter[annotator] = function
 		self.states_dict[annotator] = self.statetypes
 		self.statetypes += 1
-
 
 
 	def declare(self):
@@ -55,13 +53,11 @@ class score(object):
 		self.events = []	# contains events, no duration
 
 
-
 	def isComment(self, line, separator):
 
 		if line[0] == self.commentSymbol:	# if line starts with the commentSymbol, it is a comment:
 			return None			# ... don't process it.
 		else: return line.split(separator)	# else: split the line at separators.
-
 
 
 	def load(self, score_file_name):
@@ -88,7 +84,6 @@ class score(object):
 		return states
 
 
-
 	def save(self, score_file_name):
 
 		print "# opening", score_file_name, "to write ..."
@@ -96,7 +91,6 @@ class score(object):
 		string = '# start, duration, annotation\n'+self.__str__()
 		score_file.write(string)
 		score_file.close()
-
 
 
 	def clean_states(self, states):
@@ -115,7 +109,6 @@ class score(object):
 				self.trash.append(state)
 
 
-
 	def interpret_segment(self, state, annot):
 
 		epoch_id = annot[1]					# identify of the Epoch/this particular trial
@@ -126,19 +119,16 @@ class score(object):
 		self.segments[epoch_id].append(state)			# state contains start and duration
 		
 
-
 	def interpret_epoch(self, state, annot):
 
 		epoch_id = annot[1]					# identify of the Epoch/this particular trial
 		self.epochs[epoch_id] = state			 	# stores state and administration group
 
 
-
 	def interpret_event(self, state, annot):
 
 		event_descriptor = annot[1:]					# identify of the Epoch/this particular trial
 		self.events.append([state, event_descriptor])			 	# stores event time and event description
-
 
 
 	def interpret_state(self, state):
@@ -159,12 +149,10 @@ class score(object):
 				print "# edf.score: could not process", state
 
 
-
 	def interpret_states(self):
 
 		for state in self.states:
 			self.interpret_state(state)
-
 
 
 	def append(self, new_state=None, start=None, duration=None, annot=None):
