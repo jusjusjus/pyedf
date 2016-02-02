@@ -27,6 +27,7 @@ class montage(object):
 
 
 	def __load_mtg(self, file_name):
+
 		try: self.tree = xml.parse(MONTAGES_PATH+self.file_name.split('/')[-1])	# load xml-file with montage
 		except: self.tree = xml.parse(self.file_name)
 
@@ -48,7 +49,6 @@ class montage(object):
 				except: self.channels.append(signal_label)
 
 			self.derivation_names[-1] = self.derivation_names[-1][1:]
-
 
 
 	def __load_avg(self, file_name):
@@ -73,7 +73,6 @@ class montage(object):
 					continue
 
 				self.derivations[-1].append([other_channel, mfactor])	# derivation[i] = [...[channel, weight]...]
-
 
 
 	def mixing_matrix(self, channel_names):

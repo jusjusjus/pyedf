@@ -2,6 +2,7 @@
 
 import ctypes as ct
 import numpy as np
+import datetime
 import os
 
 
@@ -34,9 +35,8 @@ class my_param_struct(ct.Structure):					# this structure contains all the relev
 
 
 	def __init__(self):
+
 		ct.Structure.__init__(self, STRING(16), 0, 0.0, 0.0, 0, 0, 0, STRING(8), STRING(80), STRING(80))
-
-
 
 
 
@@ -70,13 +70,35 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 		("signalparam", ct.POINTER(my_param_struct))] 		# array of structs which contain the relevant signal parameters
 
 
-	def __init__(self, filename=None):
-		hdr = ct.Structure.__init__(self, 0, 0, 0, 0l, 0, 0, 0, 0l, 0, 0, 13,
-						STRING(80), STRING(80), STRING(80), STRING(15), STRING(15), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80),   
-						0l, 0l, 0l, lib.alloc_params(EDFLIB_MAXSIGNALS) )
+	def __init__(self, filename):
 
-		if not filename == None:
-			lib.read_my_header(filename, self)
+		hdr = ct.Structure.__init__(self, 0, 0, 0, 0l, 0, 0, 0, 0l, 0, 0, 13, STRING(80), STRING(80), STRING(80), STRING(15), STRING(15), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80),   0l, 0l, 0l, lib.alloc_params(EDFLIB_MAXSIGNALS) )
+
+		lib.read_my_header(filename, self)
+
+		self.fields = dict(patient=self.patient.contents.value,
+				patient_name=self.patient_name.contents.value,
+				admincode=self.admincode.contents.value)
+
+		self.fields['patient'] = self.fields['patient'].strip(' ')
+		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
+				hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
+		
+		self.channelnames = np.asarray([self.signalparam[i].label.contents.value.strip(' ') for i in xrange(self.edfsignals)])
+		self.samplingrates = np.asarray([self.signalparam[i].smp_in_datarecord for i in xrange(self.edfsignals)])
+
+
+	def read_physical_samples(self, channels, start, size):
+
+		channels = np.asarray(channels)
+
+		if channels.dtype == int:	pass
+		else:				print "edf_file : channels.dtype has to be integer."
+
+		data = np.zeros((channels.size, size), float)
+		lib.read_physical_samples(self.handle, channels.ctypes.data_as(ct.POINTER(ct.c_int)), channels.size, start, size, data.ctypes.data_as(ct.POINTER(ct.c_double)))
+
+		return data
 
 
 	def close(self):
@@ -88,24 +110,6 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 		self.close()
 
 
-
-class edf_file(my_hdr_struct):
-
-	def __init__(self, filename):
-		my_hdr_struct.__init__(self, filename)
-
-
-	def read_physical_samples(self, channels, start, size):
-
-		channels = np.asarray(channels)
-
-		if channels.dtype == int:	pass
-		else:				print "edf_file : channels.dtype has to be integer."
-
-		data = np.zeros((channels.size*SIZE), float)
-		lib.read_physical_samples(self.handle, channels.ctypes.data_as(ct.POINTER(ct.c_int)), channels.size, start, size, data.ctypes.data_as(ct.POINTER(ct.c_double)))
-
-		return data
 
 
 
@@ -132,7 +136,7 @@ if __name__ == "__main__":
 
 	import pylab
 
-	f = edf_file(filename="example/brux2_reduced.edf")
+	f = my_hdr_struct(filename="example/sample.edf")
 	
 
 	START = 0
@@ -144,10 +148,12 @@ if __name__ == "__main__":
 	print data
 
 	pylab.plot(data)
+
 	pylab.show()
 
-
 	del f
+
+	print 'exiting ..'
 
 
 

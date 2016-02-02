@@ -11,8 +11,6 @@
 //extern files_open;
 
 
-
-
 struct my_param_struct *alloc_params(int n)
 {
 	int i;
@@ -71,12 +69,13 @@ void read_my_header(char *filename, struct my_hdr_struct *myhdr)
 
 void read_physical_samples(const int hdl, int *channels, const int CHANNELS, const int START, const int SIZE, double *buf)
 {
-	int j;	// channel j
+	int j;
 
 	for(j=0; j<CHANNELS; j++)
 	{
-		edfseek(hdl, channels[j], START, EDFSEEK_SET);				// Reel the file to START.
-		edfread_physical_samples(hdl, channels[j], SIZE, &(buf[SIZE*j]));	// Read physical samples into buffer.
+		printf("channels(%i) %i ..\n", j, channels[2*j]);			// It's quite fishy that channels[2*j] is valid.  Every second one is zero.
+		edfseek(hdl, channels[2*j], START, EDFSEEK_SET);				// Reel the file to START.
+		edfread_physical_samples(hdl, channels[2*j], SIZE, &(buf[SIZE*j]));	// Read physical samples into buffer.
 	}
 }
 
@@ -180,6 +179,4 @@ void mytoedf_hdr(struct my_hdr_struct *hdr, struct edf_hdr_struct *myhdr)
 	}
 	return;
 }
-
-
 
