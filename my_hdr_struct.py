@@ -63,6 +63,7 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 				admincode=self.admincode.contents.value)
 
 		self.fields['patient'] = self.fields['patient'].strip(' ')
+
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
 		
