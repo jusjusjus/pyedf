@@ -23,10 +23,12 @@ class recording(edf.my_hdr_struct):
 
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None, channels=None):
 
-		# Check the channels ..
-		if channels == None: channels = np.arange(self.edfsignals)	# Load all channels.
+		# Setup the channel information ..
+		if channels == None:
+			channels = np.arange(self.edfsignals)	# Load all channels.
+		else:
+			channels = np.asarray(channels)
 
-		channels = np.asarray(channels)
 		if channels.dtype == int:
 			samplingrate = self.samplingrates[channels]
 			if np.iterable(samplingrate):

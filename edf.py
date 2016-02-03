@@ -34,11 +34,6 @@ class my_param_struct(ct.Structure):					# this structure contains all the relev
 		("transducer", ct.POINTER(ct.c_char*81))]		# null-terminated string
 
 
-	def __init__(self):
-
-		ct.Structure.__init__(self, STRING(16), 0, 0.0, 0.0, 0, 0, 0, STRING(8), STRING(80), STRING(80))
-
-
 
 class my_hdr_struct(ct.Structure):					# this structure contains all the relevant EDF header info and will be filled when calling the function edf_open_file_readonly()
 
@@ -82,10 +77,11 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 
 		self.fields['patient'] = self.fields['patient'].strip(' ')
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
-				hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
+						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
 		
 		self.channelnames = np.asarray([self.signalparam[i].label.contents.value.strip(' ') for i in xrange(self.edfsignals)])
 		self.samplingrates = np.asarray([self.signalparam[i].smp_in_datarecord for i in xrange(self.edfsignals)])
+		self.channeltypes = np.asarray([None for i in xrange(self.edfsignals)])
 
 
 	def read_physical_samples(self, channels, start, size):
