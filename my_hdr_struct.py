@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 from my_param_struct import my_param_struct
+import channeltypes
 import ctypes as ct
 import numpy as np
 import datetime
@@ -67,7 +68,7 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 		
 		self.channelnames = np.asarray([self.signalparam[i].label.contents.value.strip(' ') for i in xrange(self.edfsignals)])
 		self.samplingrates = np.asarray([self.signalparam[i].smp_in_datarecord for i in xrange(self.edfsignals)])
-		self.channeltypes = np.asarray([None for i in xrange(self.edfsignals)])
+		self.channeltypes = np.asarray([channeltypes.get_type(self.signalparam[i]) for i in xrange(self.edfsignals)])
 
 
 	def read_physical_samples(self, channels, start, size):
