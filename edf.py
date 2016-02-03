@@ -92,8 +92,11 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 
 		channels = np.asarray(channels)
 
-		if channels.dtype == int:	pass
-		else:				print "edf_file : channels.dtype has to be integer."
+		if not channels.dtype == int:
+			print "edf_file : channels.dtype has to be integer."
+			return None
+
+		channels = np.asarray(channels, dtype=np.int32)			# By default, it's int64 which will be converted to a long by ansi-c.
 
 		data = np.zeros((channels.size, size), float)
 		lib.read_physical_samples(self.handle, channels.ctypes.data_as(ct.POINTER(ct.c_int)), channels.size, start, size, data.ctypes.data_as(ct.POINTER(ct.c_double)))

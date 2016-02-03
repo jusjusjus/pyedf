@@ -73,9 +73,8 @@ void read_physical_samples(const int hdl, int *channels, const int CHANNELS, con
 
 	for(j=0; j<CHANNELS; j++)
 	{
-		printf("channels(%i) %i ..\n", j, channels[2*j]);			// It's quite fishy that channels[2*j] is valid.  Every second one is zero.
-		edfseek(hdl, channels[2*j], START, EDFSEEK_SET);				// Reel the file to START.
-		edfread_physical_samples(hdl, channels[2*j], SIZE, &(buf[SIZE*j]));	// Read physical samples into buffer.
+		edfseek(hdl, channels[j], START, EDFSEEK_SET);				// Reel the file to START.
+		edfread_physical_samples(hdl, channels[j], SIZE, &(buf[SIZE*j]));	// Read physical samples into buffer.
 	}
 }
 
