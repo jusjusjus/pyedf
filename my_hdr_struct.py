@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+from my_param_struct import my_param_struct
 import ctypes as ct
 import numpy as np
 import datetime
@@ -17,21 +18,6 @@ EDFLIB_MAXSIGNALS = 256
 
 def STRING(size):
 	return ct.cast( ct.create_string_buffer(size+1), ct.POINTER(ct.c_char*(size+1)) )
-
-
-
-class my_param_struct(ct.Structure):					# this structure contains all the relevant EDF-signal parameters of one signal
-
-	_fields_ = [("label", ct.POINTER(ct.c_char*17)),		# label (name) of the signal, null-terminated string
-		("smp_in_file", ct.c_longlong), 			# number of samples of this signal in the file
-		("phys_max", ct.c_double),      			# physical maximum
-		("phys_min", ct.c_double),      			# physical minimum
-		("dig_max", ct.c_int),         				# digital maximum
-		("dig_min", ct.c_int),        				# digital minimum
-		("smp_in_datarecord", ct.c_int),			# number of samples of this signal in a datarecord
-		("physdimension", ct.POINTER(ct.c_char*9)),		# physical dimension (uV, bpm, mA, etc.), null-terminated string
-		("prefilter", ct.POINTER(ct.c_char*81)),		# null-terminated string
-		("transducer", ct.POINTER(ct.c_char*81))]		# null-terminated string
 
 
 
@@ -146,7 +132,7 @@ if __name__ == "__main__":
 
 	print data
 
-	pylab.plot(data)
+	pylab.plot(data[0])
 
 	pylab.show()
 

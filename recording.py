@@ -2,7 +2,7 @@
 
 import numpy as np
 
-import edf
+from my_hdr_struct import my_hdr_struct
 import state
 import montages
 import datetime
@@ -10,10 +10,10 @@ import datetime
 
 
 
-class recording(edf.my_hdr_struct):
+class recording(my_hdr_struct):
 
 	def __init__(self, filename, verbose=0):
-		edf.my_hdr_struct.__init__(self, filename)
+		my_hdr_struct.__init__(self, filename)
 
 		self.verbose = verbose
 
@@ -75,8 +75,7 @@ class recording(edf.my_hdr_struct):
 		string +='edfsignals : %i\n' % (self.edfsignals)
 
 		string += '\nSignal Information\n'
-		string += '------------------\n'
-
+		string += '------------------\n' 
 		for i in xrange(self.edfsignals):
 			string += 'Signal %i\n' % (i)
 			string += 'Name : %s\n' % (self.channelnames[i])
