@@ -2,28 +2,24 @@
 
 from my_param_struct import my_param_struct
 
-EOG_Channels = ['ROC-LOC', 'LOC-ROC',
-		'ROC',
-		'LOC']
-
 EEG_Channels = ['FP1',
 		'FP2',
 		'Fp1',
 		'Fp2',
-		'F3',
-		'F4',
+		'F3', 'F3A2',
+		'F4', 'F4A1',
 		'F7',
 		'F8',
 		'T3',
 		'T4',
 		'T5',
 		'T6',
-		'C3',
-		'C4',
+		'C3', 'C3-A2', 'C3A2',
+		'C4', 'C4A1',
 		'P3',
 		'P4',
-		'O1',
-		'O2',
+		'O1', 'O1A2',
+		'O2', 'O2-A1', 'O2A1',
 		'A1',
 		'A2',
 		'Fp2-F4', 'FP2-F4',
@@ -34,6 +30,7 @@ EEG_Channels = ['FP1',
 		'F8-T4',
 		'T4-T6',
 		'Fp1-F3', 'FP1-F3',
+		'F1-F3',
 		'F3-C3',
 		'C3-P3',
 		'P3-O1',
@@ -41,16 +38,23 @@ EEG_Channels = ['FP1',
 		'T3-T5',
 		'C4-A1']
 
+EOG_Channels = ['ROC-LOC', 'LOC-ROC',
+		'EOG dx',
+		'ROC', 'ROC-A2', 'EOG-R',
+		'LOC', 'LOC-A1', 'EOG-L']
+
 ECG_Channels = ['ECG1-ECG2',
 		'ECG1',
-		'ECG2']
+		'ECG2',
+		'ekg', 'EKG', 'ECG']
 
-HR_Channels = ['HR']
+HR_Channels = ['HR',
+	       'Heart Rate Varia']
 
 Resp_Channels = ['PLETH', 'Pleth',
-		'TORACE', 'Torace',
-		'ADDDOME', 'ADDOME', 'Abdo',
-		'Flusso', 'Canula',
+		'TORACE', 'Torace', 'toracico',
+		'ADDDOME', 'ADDOME', 'Abdo', 'abdomen'
+		'Flusso', 'Canula', 'cannula', 'Flow', 'flow',
 		'TERMISTORE']
 
 BloodGas_Channels = ['SAO2', 'SpO2', 'Ox Status']
@@ -59,11 +63,12 @@ Leg_Channels = ['SX1-SX2',
 		'DX1-DX2', 'Dx1-DX2',
 		'DX1', 'DX2',
 		'SX1', 'SX2',
-		'TIB Dx', 'TIB Sx']
+		'TIB Dx', 'TIB Sx', 'tib sin', 'tib dx']
 
-EMG_Channels = ['EMG1-EMG2',
-		'EMG1',
-		'EMG2']
+EMG_Channels = ['EMG1-EMG2', 'EMG-EMG',
+		'EMG1', 'CHIN1',
+		'EMG2', 'CHIN2',
+		'deltoide', 'EMG']
 
 Position_Channels = ['Posizione', 'Position',
 			'STAT']
