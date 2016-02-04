@@ -90,8 +90,9 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 
 	def close(self):
 		lib.free_params(self.signalparam)
-		lib.edf_close(self.handle)
-	
+		exitcode = lib.edf_close(self.handle)
+		if exitcode < 0: print "my_hdr_struct : problems closing file."
+
 
 	def __del__(self):
 		self.close()

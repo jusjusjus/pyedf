@@ -200,7 +200,7 @@ int edfclose_file(int handle)
 
 	hdr = hdrlist[handle];
 
-	if(hdr->writemode)
+	if(hdr->writemode)		// If the file was opened to be written to ..
 	{
 		if(hdr->datarecords == 0LL)
 		{
@@ -366,7 +366,7 @@ int edfclose_file(int handle)
 
 		return 0;
 	}
-	else		// edf-file was read only ..
+	else		// edf-file was opened to read only ..
 	{
 		if(annotationslist[handle] != NULL)
 		{

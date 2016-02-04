@@ -15,7 +15,7 @@ EEG_Channels = ['FP1',
 		'T5',
 		'T6',
 		'C3', 'C3-A2', 'C3A2',
-		'C4', 'C4A1',
+		'C4', 'C4A1', 'C4-A1',
 		'P3',
 		'P4',
 		'O1', 'O1A2',
@@ -35,8 +35,7 @@ EEG_Channels = ['FP1',
 		'C3-P3',
 		'P3-O1',
 		'F7-T3',
-		'T3-T5',
-		'C4-A1']
+		'T3-T5']
 
 EOG_Channels = ['ROC-LOC', 'LOC-ROC',
 		'EOG dx',
