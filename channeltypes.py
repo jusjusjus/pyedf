@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from my_param_struct import my_param_struct
+from edf_param_struct import edf_param_struct
 
 EEG_Channels = ['FP1',
 		'FP2',
@@ -84,7 +84,7 @@ Types = dict(EEG=EEG_Channels, EOG=EOG_Channels, ECG=ECG_Channels,
 
 def get_type(channel):
 
-	if type(channel) == my_param_struct:
+	if type(channel) == edf_param_struct:
 		label = channel.label.strip(" ")
 	else:
 		label = channel

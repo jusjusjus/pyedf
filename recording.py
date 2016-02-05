@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from my_hdr_struct import my_hdr_struct
+from edf_hdr_struct import edf_hdr_struct
 import state
 import montages
 import datetime
@@ -10,10 +10,10 @@ import datetime
 
 
 
-class recording(my_hdr_struct):
+class recording(edf_hdr_struct):
 
 	def __init__(self, filename, verbose=0):
-		my_hdr_struct.__init__(self, filename)
+		edf_hdr_struct.__init__(self, filename)
 
 		self.verbose = verbose
 
@@ -110,9 +110,10 @@ if __name__ == "__main__":
 	dur = 100.
 
 
-	rec = recording(filename="/home/jus/Data/capslpdb/brux2/brux2.edf", verbose=0)
+	rec = recording(filename="/home/jus/Data/capslpdb/n6/n6.edf", verbose=0)
+	print rec.patient
+	exit(0)
 	print rec
-	#exit(0)
 	data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
 
 	offset = 80

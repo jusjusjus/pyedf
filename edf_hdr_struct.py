@@ -21,7 +21,7 @@ def STRING(size):
 	return ct.cast( ct.create_string_buffer(size+1), ct.POINTER(ct.c_char*(size+1)) )
 
 def CHARRAY(size):
-	return " "*(size+1)#ct.create_string_buffer(size+1)
+	return r' '*(size+1)#ct.create_string_buffer(size+1)
 
 
 
@@ -57,14 +57,7 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 
 	def __init__(self, filename):
 
-		hdr = ct.Structure.__init__(self, 0, 0, 0, 0l, 0, 0, 0, 0l, 0, 0, 0, CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(15), CHARRAY(15), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80),   0l, 0l, 0l)
-
 		lib.read_my_header(filename, self)
-
-		print self.patient, self.recording
-
-
-		self.patient = self.patient.strip(' ')
 
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
