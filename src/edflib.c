@@ -206,7 +206,7 @@ int edfclose_file(int handle)
 		{
 			if(edflib_write_edf_header(hdr))
 			{
-				return(-1);
+				return -1;
 			}
 
 			annot2 = write_annotationslist[handle];
@@ -402,6 +402,8 @@ int edfclose_file(int handle)
 
 		files_open--;
 
+		hdrlist[handle] = NULL;
+
 		return 0;
 	}
 
@@ -419,32 +421,32 @@ long long edfseek(int handle, int edfsignal, long long offset, int whence)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
-	if(handle>=EDFLIB_MAXFILES)
+	if(handle >= EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->writemode)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=(hdrlist[handle]->edfsignals - hdrlist[handle]->nr_annot_chns))
 	{
-		return(-1);
+		return -1;
 	}
 
 	channel = hdrlist[handle]->mapped_signals[edfsignal];
@@ -489,32 +491,32 @@ long long edftell(int handle, int edfsignal)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
-	if(handle>=EDFLIB_MAXFILES)
+	if(handle >= EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->writemode)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=(hdrlist[handle]->edfsignals - hdrlist[handle]->nr_annot_chns))
 	{
-		return(-1);
+		return -1;
 	}
 
 	channel = hdrlist[handle]->mapped_signals[edfsignal];
@@ -593,39 +595,39 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->writemode)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=(hdrlist[handle]->edfsignals - hdrlist[handle]->nr_annot_chns))
 	{
-		return(-1);
+		return -1;
 	}
 
 	channel = hdrlist[handle]->mapped_signals[edfsignal];
 
 	if(n<0LL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(n==0LL)
@@ -658,7 +660,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 
 		if(n<0)
 		{
-			return(-1);
+			return -1;
 		}
 	}
 
@@ -700,7 +702,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 			tmp = fgetc(file);
 			if(tmp==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 			var.four[1] = tmp;
 
@@ -729,7 +731,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 			tmp = fgetc(file);
 			if(tmp==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 			var.four[2] = tmp;
 
@@ -781,39 +783,39 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->writemode)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=(hdrlist[handle]->edfsignals - hdrlist[handle]->nr_annot_chns))
 	{
-		return(-1);
+		return -1;
 	}
 
 	channel = hdrlist[handle]->mapped_signals[edfsignal];
 
 	if(n<0LL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(n==0LL)
@@ -846,7 +848,7 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 
 		if(n<0)
 		{
-			return(-1);
+			return -1;
 		}
 	}
 
@@ -884,7 +886,7 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 			tmp = fgetc(file);
 			if(tmp==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 			var.four[1] = tmp;
 
@@ -911,7 +913,7 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 			tmp = fgetc(file);
 			if(tmp==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 			var.four[2] = tmp;
 
@@ -949,46 +951,46 @@ int edf_get_annotation(int handle, int n, struct edf_annotation_struct *annot)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->writemode)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(n<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(n>=hdrlist[handle]->annots_in_file)
 	{
-		return(-1);
+		return -1;
 	}
 
 	list_annot = annotationslist[handle];
 
 	if(list_annot==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	for(i=0; i<n; i++)
 	{
 		if(list_annot->next_annotation==NULL)
 		{
-			return(-1);
+			return -1;
 		}
 
 		list_annot = list_annot->next_annotation;
@@ -3489,42 +3491,42 @@ int edf_set_samplefrequency(int handle, int edfsignal, int samplefrequency)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(samplefrequency<1)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->edfparam[edfsignal].smp_per_record = samplefrequency;
@@ -3538,32 +3540,32 @@ int edf_set_datarecord_duration(int handle, int duration)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if((duration < 2500) || (duration > 2000000))
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->long_data_record_duration = (long long)duration * 100LL;
@@ -3605,27 +3607,27 @@ int edfwrite_digital_samples(int handle, int *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edfsignals == 0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdr = hdrlist[handle];
@@ -3671,7 +3673,7 @@ int edfwrite_digital_samples(int handle, int *buf)
 
 		if(fputc((value>>8)&0xff, file)==EOF)
 		{
-			return(-1);
+			return -1;
 		}
 
 		if(hdr->bdf)
@@ -3730,32 +3732,32 @@ int edf_blockwrite_digital_samples(int handle, int *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->signal_write_sequence_pos)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edfsignals == 0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdr = hdrlist[handle];
@@ -3802,7 +3804,7 @@ int edf_blockwrite_digital_samples(int handle, int *buf)
 
 			if(fputc((value>>8)&0xff, file)==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 
 			if(hdr->bdf)
@@ -3860,27 +3862,27 @@ int edfwrite_physical_samples(int handle, double *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edfsignals == 0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdr = hdrlist[handle];
@@ -3932,7 +3934,7 @@ int edfwrite_physical_samples(int handle, double *buf)
 
 		if(fputc((value>>8)&0xff, file)==EOF)
 		{
-			return(-1);
+			return -1;
 		}
 
 		if(hdr->bdf)
@@ -3995,32 +3997,32 @@ int edf_blockwrite_physical_samples(int handle, double *buf)
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->signal_write_sequence_pos)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edfsignals == 0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdr = hdrlist[handle];
@@ -4073,7 +4075,7 @@ int edf_blockwrite_physical_samples(int handle, double *buf)
 
 			if(fputc((value>>8)&0xff, file)==EOF)
 			{
-				return(-1);
+				return -1;
 			}
 
 			if(hdr->bdf)
@@ -4668,37 +4670,37 @@ int edf_set_label(int handle, int edfsignal, const char *label)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->edfparam[edfsignal].label, label, 16);
@@ -4716,37 +4718,37 @@ int edf_set_physical_dimension(int handle, int edfsignal, const char *phys_dim)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->edfparam[edfsignal].physdimension, phys_dim, 8);
@@ -4764,37 +4766,37 @@ int edf_set_physical_maximum(int handle, int edfsignal, double phys_max)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->edfparam[edfsignal].phys_max = phys_max;
@@ -4808,37 +4810,37 @@ int edf_set_physical_minimum(int handle, int edfsignal, double phys_min)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->edfparam[edfsignal].phys_min = phys_min;
@@ -4852,52 +4854,52 @@ int edf_set_digital_maximum(int handle, int edfsignal, int dig_max)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edf)
 	{
 		if(dig_max > 32767)
 		{
-			return(-1);
+			return -1;
 		}
 	}
 	else
 	{
 		if(dig_max > 8388607)
 		{
-			return(-1);
+			return -1;
 		}
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->edfparam[edfsignal].dig_max = dig_max;
@@ -4911,52 +4913,52 @@ int edf_set_digital_minimum(int handle, int edfsignal, int dig_min)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->edf)
 	{
 		if(dig_min < (-32768))
 		{
-			return(-1);
+			return -1;
 		}
 	}
 	else
 	{
 		if(dig_min < (-8388608))
 		{
-			return(-1);
+			return -1;
 		}
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->edfparam[edfsignal].dig_min = dig_min;
@@ -4970,27 +4972,27 @@ int edf_set_patientname(int handle, const char *patientname)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_patient_name, patientname, 80);
@@ -5008,27 +5010,27 @@ int edf_set_patientcode(int handle, const char *patientcode)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_patientcode, patientcode, 80);
@@ -5046,32 +5048,32 @@ int edf_set_gender(int handle, int gender)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if((gender<0)||(gender>1))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(gender)
@@ -5094,34 +5096,34 @@ int edf_set_birthdate(int handle, int birthdate_year, int birthdate_month, int b
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if((birthdate_year<1800) || (birthdate_year>3000) ||
 		 (birthdate_month<1)	 || (birthdate_month>12)	||
 		 (birthdate_day<1)		 || (birthdate_day>31))
 	{
-		return(-1);
+		return -1;
 	}
 
 	sprintf(hdrlist[handle]->plus_birthdate, "%02i.%02i.%02i%02i", birthdate_day, birthdate_month, birthdate_year / 100, birthdate_year % 100);
@@ -5137,27 +5139,27 @@ int edf_set_patient_additional(int handle, const char *patient_additional)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_patient_additional, patient_additional, 80);
@@ -5175,27 +5177,27 @@ int edf_set_admincode(int handle, const char *admincode)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_admincode, admincode, 80);
@@ -5213,27 +5215,27 @@ int edf_set_technician(int handle, const char *technician)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_technician, technician, 80);
@@ -5251,27 +5253,27 @@ int edf_set_equipment(int handle, const char *equipment)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_equipment, equipment, 80);
@@ -5289,27 +5291,27 @@ int edf_set_recording_additional(int handle, const char *recording_additional)
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	strncpy(hdrlist[handle]->plus_recording_additional, recording_additional, 80);
@@ -5328,27 +5330,27 @@ int edf_set_startdatetime(int handle, int startdate_year, int startdate_month, i
 {
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]->datarecords)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if((startdate_year<1970) || (startdate_year>3000) ||
@@ -5358,7 +5360,7 @@ int edf_set_startdatetime(int handle, int startdate_year, int startdate_month, i
 		 (starttime_minute<0)	|| (starttime_minute>59) ||
 		 (starttime_second<0)	|| (starttime_second>59))
 	{
-		return(-1);
+		return -1;
 	}
 
 	hdrlist[handle]->startdate_year = startdate_year;
@@ -5383,33 +5385,33 @@ int edfwrite_annotation_utf8(int handle, long long onset, long long duration, co
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(onset<0LL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	list_annot = (struct edf_write_annotationblock *)calloc(1, sizeof(struct edf_write_annotationblock));
 	if(list_annot==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	list_annot->onset = onset;
@@ -5463,33 +5465,33 @@ int edfwrite_annotation_latin1(int handle, long long onset, long long duration, 
 
 	if(handle<0)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(handle>=EDFLIB_MAXFILES)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(hdrlist[handle]==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(!(hdrlist[handle]->writemode))
 	{
-		return(-1);
+		return -1;
 	}
 
 	if(onset<0LL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	list_annot = (struct edf_write_annotationblock *)calloc(1, sizeof(struct edf_write_annotationblock));
 	if(list_annot==NULL)
 	{
-		return(-1);
+		return -1;
 	}
 
 	list_annot->onset = onset;
@@ -5548,25 +5550,25 @@ void edflib_remove_padding_trailing_spaces(char *str)
 int edf_set_prefilter(int handle, int edfsignal, const char *prefilter)
 {
 	if(handle<0)
-		return(-1);
+		return -1;
 
 	if(handle>=EDFLIB_MAXFILES)
-		return(-1);
+		return -1;
 
 	if(hdrlist[handle]==NULL)
-		return(-1);
+		return -1;
 
 	if(!(hdrlist[handle]->writemode))
-		return(-1);
+		return -1;
 
 	if(edfsignal<0)
-		return(-1);
+		return -1;
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
-		return(-1);
+		return -1;
 
 	if(hdrlist[handle]->datarecords)
-		return(-1);
+		return -1;
 
 	strncpy(hdrlist[handle]->edfparam[edfsignal].prefilter, prefilter, 80);
 
@@ -5582,25 +5584,25 @@ int edf_set_prefilter(int handle, int edfsignal, const char *prefilter)
 int edf_set_transducer(int handle, int edfsignal, const char *transducer)
 {
 	if(handle<0)
-		return(-1);
+		return -1;
 
 	if(handle>=EDFLIB_MAXFILES)
-		return(-1);
+		return -1;
 
 	if(hdrlist[handle]==NULL)
-		return(-1);
+		return -1;
 
 	if(!(hdrlist[handle]->writemode))
-		return(-1);
+		return -1;
 
 	if(edfsignal<0)
-		return(-1);
+		return -1;
 
 	if(edfsignal>=hdrlist[handle]->edfsignals)
-		return(-1);
+		return -1;
 
 	if(hdrlist[handle]->datarecords)
-		return(-1);
+		return -1;
 
 	strncpy(hdrlist[handle]->edfparam[edfsignal].transducer, transducer, 80);
 
