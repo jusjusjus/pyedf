@@ -61,7 +61,7 @@ struct my_hdr_struct {                     	/* this structure contains all the r
 	struct my_param_struct *signalparam;	/* array of structs which contain the relevant signal parameters */
 };
 
-struct my_param_struct *alloc_params(int);
+struct my_param_struct *alloc_params(void);
 void free_params(struct my_param_struct*);
 
 void read_my_header(char *filename, struct my_hdr_struct *myhdr);

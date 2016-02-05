@@ -11,12 +11,12 @@
 //extern files_open;
 
 
-struct my_param_struct *alloc_params(int n)
+struct my_param_struct *alloc_params(void)
 {
 	int i;
 	struct my_param_struct* paramslist;
 
-       	paramslist = (struct my_param_struct*)calloc(n, sizeof(struct my_param_struct)*EDFLIB_MAXSIGNALS);
+       	paramslist = (struct my_param_struct*)calloc(EDFLIB_MAXSIGNALS, sizeof(struct my_param_struct));
 
 	for(i=0; i<EDFLIB_MAXSIGNALS; i++)
 	{
