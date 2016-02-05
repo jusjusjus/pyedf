@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-from my_param_struct import my_param_struct
+from edf_param_struct import edf_param_struct
 import channeltypes
 import ctypes as ct
 import numpy as np
@@ -20,9 +20,12 @@ EDFLIB_MAXSIGNALS = 256
 def STRING(size):
 	return ct.cast( ct.create_string_buffer(size+1), ct.POINTER(ct.c_char*(size+1)) )
 
+def CHARRAY(size):
+	return " "*(size+1)#ct.create_string_buffer(size+1)
 
 
-class my_hdr_struct(ct.Structure):					# this structure contains all the relevant EDF header info and will be filled when calling the function edf_open_file_readonly()
+
+class edf_hdr_struct(ct.Structure):					# this structure contains all the relevant EDF header info and will be filled when calling the function edf_open_file_readonly()
 
 	_fields_ = [("handle", ct.c_int),				# a handle (identifier) used to distinguish the different files
 		("filetype", ct.c_int),					# 0 : EDF, 1 : EDFplus, 2 : BDF, 3 : BDFplus.  Negative numbers indicate errors.
@@ -35,39 +38,38 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 		("starttime_second", ct.c_int),       
 		("starttime_minute", ct.c_int),       
 		("starttime_hour", ct.c_int),       
-		("patient", ct.POINTER(ct.c_char*81)),			# null-terminated string, contains patientfield of header, is always empty when filetype is EDFPLUS or BDFPLUS
-		("recording", ct.POINTER(ct.c_char*81)),		# null-terminated string, contains recordingfield of header, is always empty when filetype is EDFPLUS or BDFPLUS
-		("patientcode", ct.POINTER(ct.c_char*81)),		# null-terminated string, is always empty when filetype is EDF or BDF
-		("gender", ct.POINTER(ct.c_char*16)),                   # null-terminated string, is always empty when filetype is EDF or BDF
-		("birthdate", ct.POINTER(ct.c_char*16)),                # null-terminated string, is always empty when filetype is EDF or BDF
-		("patient_name", ct.POINTER(ct.c_char*81)),		# null-terminated string, is always empty when filetype is EDF or BDF
-		("patient_additional", ct.POINTER(ct.c_char*81)),       # null-terminated string, is always empty when filetype is EDF or BDF
-		("admincode", ct.POINTER(ct.c_char*81)),                # null-terminated string, is always empty when filetype is EDF or BDF
-		("technician", ct.POINTER(ct.c_char*81)),               # null-terminated string, is always empty when filetype is EDF or BDF
-		("equipment", ct.POINTER(ct.c_char*81)),                # null-terminated string, is always empty when filetype is EDF or BDF
-		("recording_additional", ct.POINTER(ct.c_char*81)),     # null-terminated string, is always empty when filetype is EDF or BDF
+		("patient", ct.c_char*81),			# null-terminated string, contains patientfield of header, is always empty when filetype is EDFPLUS or BDFPLUS
+		("recording", ct.c_char*81),		# null-terminated string, contains recordingfield of header, is always empty when filetype is EDFPLUS or BDFPLUS
+		("patientcode", ct.c_char*81),		# null-terminated string, is always empty when filetype is EDF or BDF
+		("gender", ct.c_char*16),                   # null-terminated string, is always empty when filetype is EDF or BDF
+		("birthdate", ct.c_char*16),                # null-terminated string, is always empty when filetype is EDF or BDF
+		("patient_name", ct.c_char*81),		# null-terminated string, is always empty when filetype is EDF or BDF
+		("patient_additional", ct.c_char*81),       # null-terminated string, is always empty when filetype is EDF or BDF
+		("admincode", ct.c_char*81),                # null-terminated string, is always empty when filetype is EDF or BDF
+		("technician", ct.c_char*81),               # null-terminated string, is always empty when filetype is EDF or BDF
+		("equipment", ct.c_char*81),                # null-terminated string, is always empty when filetype is EDF or BDF
+		("recording_additional", ct.c_char*81),     # null-terminated string, is always empty when filetype is EDF or BDF
 		("datarecord_duration", ct.c_longlong),			# duration of a datarecord expressed in units of 100 nanoSeconds
 		("datarecords_in_file", ct.c_longlong),			# number of datarecords in the file
 		("annotations_in_file", ct.c_longlong),			# number of annotations in the file
-		("signalparam", ct.POINTER(my_param_struct))] 		# array of structs which contain the relevant signal parameters
+		("signalparam", edf_param_struct*EDFLIB_MAXSIGNALS)] 		# array of structs which contain the relevant signal parameters
 
 
 	def __init__(self, filename):
 
-		hdr = ct.Structure.__init__(self, 0, 0, 0, 0l, 0, 0, 0, 0l, 0, 0, 13, STRING(80), STRING(80), STRING(80), STRING(15), STRING(15), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80), STRING(80),   0l, 0l, 0l, lib.alloc_params(EDFLIB_MAXSIGNALS) )
+		hdr = ct.Structure.__init__(self, 0, 0, 0, 0l, 0, 0, 0, 0l, 0, 0, 0, CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(15), CHARRAY(15), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80), CHARRAY(80),   0l, 0l, 0l)
 
 		lib.read_my_header(filename, self)
 
-		self.fields = dict(patient=self.patient.contents.value,
-				patient_name=self.patient_name.contents.value,
-				admincode=self.admincode.contents.value)
+		print self.patient, self.recording
 
-		self.fields['patient'] = self.fields['patient'].strip(' ')
+
+		self.patient = self.patient.strip(' ')
 
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
 		
-		self.channelnames = np.asarray([self.signalparam[i].label.contents.value.strip(' ') for i in xrange(self.edfsignals)])
+		self.channelnames = np.asarray([self.signalparam[i].label.strip(' ') for i in xrange(self.edfsignals)])
 		self.samplingrates = np.asarray([self.signalparam[i].smp_in_datarecord for i in xrange(self.edfsignals)])
 		self.channeltypes = np.asarray([channeltypes.get_type(self.signalparam[i]) for i in xrange(self.edfsignals)])
 
@@ -89,9 +91,8 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 
 
 	def close(self):
-		lib.free_params(self.signalparam)
 		exitcode = lib.edf_close(self.handle)
-		if exitcode < 0: print "my_hdr_struct : problems closing file."
+		if exitcode < 0: print "edf_hdr_struct : problems closing file."
 
 
 	def __del__(self):
@@ -103,19 +104,12 @@ class my_hdr_struct(ct.Structure):					# this structure contains all the relevan
 
 
 
-lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(my_hdr_struct)]
+lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(edf_hdr_struct)]
 
 lib.read_physical_samples.argtypes = [ct.c_int, ct.POINTER(ct.c_int), ct.c_int, ct.c_int, ct.c_int, ct.POINTER(ct.c_double)]
 
 lib.edf_close.argtypes = [ct.c_int]
 lib.edf_close.restype = ct.c_int
-
-lib.alloc_params.argtypes = [ct.c_int]
-lib.alloc_params.restype = ct.POINTER(my_param_struct)
-
-lib.free_params.argtypes = [ct.POINTER(my_param_struct)]
-
-
 
 
 
@@ -124,7 +118,7 @@ if __name__ == "__main__":
 
 	import pylab
 
-	f = my_hdr_struct(filename="example/sample.edf")
+	f = edf_hdr_struct(filename="example/sample.edf")
 	
 
 	START = 0

@@ -72,7 +72,7 @@ class recording(my_hdr_struct):
 
 
 	def __str__(self):
-		string = '############## %s ################\n' % (self.fields['patient'])
+		string = '############## %s ################\n' % (self.patient)
 
 		string +='start : %s\n' % (str(self.start))
 		string +='edfsignals : %i\n' % (self.edfsignals)
@@ -89,7 +89,7 @@ class recording(my_hdr_struct):
 		string += '------------------\n'
 		
 
-		string += '############## %s ################' % ('#'*len(self.fields['patient']))
+		string += '############## %s ################' % ('#'*len(self.patient))
 
 		return string
 
@@ -112,6 +112,7 @@ if __name__ == "__main__":
 
 	rec = recording(filename="/home/jus/Data/capslpdb/brux2/brux2.edf", verbose=0)
 	print rec
+	#exit(0)
 	data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
 
 	offset = 80

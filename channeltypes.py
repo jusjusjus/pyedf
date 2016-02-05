@@ -85,7 +85,7 @@ Types = dict(EEG=EEG_Channels, EOG=EOG_Channels, ECG=ECG_Channels,
 def get_type(channel):
 
 	if type(channel) == my_param_struct:
-		label = channel.label.contents.value.strip(" ")
+		label = channel.label.strip(" ")
 	else:
 		label = channel
 
