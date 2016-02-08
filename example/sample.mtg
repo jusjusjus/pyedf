@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<EDFView_montage>
+  <signalcomposition>
+    <alias></alias>
+    <num_of_signals>1</num_of_signals>
+    <voltpercm>100.000000</voltpercm>
+    <screen_offset>0.000000</screen_offset>
+    <polarity>1</polarity>
+    <color>9</color>
+    <filter_cnt>0</filter_cnt>
+    <fidfilter_cnt>0</fidfilter_cnt>
+    <ravg_filter_cnt>0</ravg_filter_cnt>
+    <signal>
+      <label>Fp2-F4          </label>
+      <factor>1</factor>
+    </signal>
+  </signalcomposition>
+  <signalcomposition>
+    <alias></alias>
+    <num_of_signals>2</num_of_signals>
+    <voltpercm>100.000000</voltpercm>
+    <screen_offset>0.000000</screen_offset>
+    <polarity>1</polarity>
+    <color>9</color>
+    <filter_cnt>0</filter_cnt>
+    <fidfilter_cnt>0</fidfilter_cnt>
+    <ravg_filter_cnt>0</ravg_filter_cnt>
+    <signal>
+      <label>F4-C4           </label>
+      <factor>1</factor>
+    </signal>
+    <signal>
+      <label>C4-P4           </label>
+      <factor>-1</factor>
+    </signal>
+  </signalcomposition>
+  <signalcomposition>
+    <alias></alias>
+    <num_of_signals>2</num_of_signals>
+    <voltpercm>100.000000</voltpercm>
+    <screen_offset>0.000000</screen_offset>
+    <polarity>1</polarity>
+    <color>9</color>
+    <filter_cnt>0</filter_cnt>
+    <fidfilter_cnt>0</fidfilter_cnt>
+    <ravg_filter_cnt>0</ravg_filter_cnt>
+    <signal>
+      <label>C4-P4           </label>
+      <factor>1</factor>
+    </signal>
+    <signal>
+      <label>P4-O2           </label>
+      <factor>-1</factor>
+    </signal>
+  </signalcomposition>
+  <pagetime>100000000</pagetime>
+</EDFView_montage>
