@@ -72,7 +72,7 @@ class recording(edf_hdr_struct):
 
 
 	def __str__(self):
-		string = '############## %s ################\n' % (self.patient)
+		string = '\n############## %s ################\n' % (self.patient)
 
 		string +='start : %s\n' % (str(self.start))
 		string +='edfsignals : %i\n' % (self.edfsignals)
@@ -89,7 +89,7 @@ class recording(edf_hdr_struct):
 		string += '------------------\n'
 		
 
-		string += '############## %s ################' % ('#'*len(self.patient))
+		string += '############## %s ################\n' % ('#'*len(self.patient))
 
 		return string
 
@@ -107,13 +107,10 @@ if __name__ == "__main__":
 	START = 0
 	SIZE = 100000
 	ch = pylab.array([1, 15, 1], dtype=long)
-	dur = 100.
+	dur = 200.
 
 
-	rec = recording(filename="/home/jus/Data/capslpdb/n6/n6.edf", verbose=0)
-	print rec.patient
-	exit(0)
-	print rec
+	rec = recording(filename="/home/jus/Data/capslpdb/n5/n5.edf", verbose=0)
 	data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
 
 	offset = 80

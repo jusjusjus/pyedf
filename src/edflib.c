@@ -676,7 +676,6 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 	sample_pntr = hdr->edfparam[channel].sample_pntr;
 
 	samples_end = sample_pntr + n;
-	printf("# samples_end = %lli\n", samples_end);
 
 	smp_per_record = hdr->edfparam[channel].smp_per_record;
 
@@ -864,7 +863,6 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 	sample_pntr = hdr->edfparam[channel].sample_pntr;
 
 	samples_end = sample_pntr + n;
-	printf("# samples_end = %lli\n", samples_end);
 
 	smp_per_record = hdr->edfparam[channel].smp_per_record;
 
