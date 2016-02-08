@@ -3,9 +3,11 @@
 import numpy as np
 import xml.etree.ElementTree as xml
 
-MONTAGES_PATH = '/home/jus/.edf/Montages/'
+
+MONTAGES_PATH = '/home/jus/.EDFView/Montages/'
 
 FILE_TYPES = ['mtg', 'avg']
+
 
 
 class montage(object):
@@ -28,13 +30,13 @@ class montage(object):
 
 	def __load_mtg(self, file_name):
 
-		try: self.tree = xml.parse(MONTAGES_PATH+self.file_name.split('/')[-1])	# load xml-file with montage
-		except: self.tree = xml.parse(self.file_name)
+		try:	self.tree = xml.parse(MONTAGES_PATH+self.file_name.split('/')[-1])	# load xml-file with montage
+		except:	self.tree = xml.parse(self.file_name)
 
 		root = self.tree.getroot()
-		self.derivations = []
-		self.channels = []
-		self.derivation_names = []
+		self.derivations = []					# List of [[channelname 1, weight in derivation], [channelname 2, weight in derivation], ..]
+		self.channels = []					# Contains individual channel names
+		self.derivation_names = []				# Contains derivation names
 
 		for signalcomposition in root.iter('signalcomposition'):
 			self.derivations.append([])
@@ -42,11 +44,12 @@ class montage(object):
 
 			for signal in signalcomposition.iter('signal'):
 				signal_label = signal.find('label').text.strip()
-				self.derivations[-1].append([signal_label, float(signal.find('factor').text)])	# derivation[i] = [...[channel, weight]...]
+				self.derivations[-1].append([signal_label, float(signal.find('factor').text)])		# derivation[i] = [...[channel, weight]...]
 				
 				self.derivation_names[-1] += '-'+signal_label
-				try: self.channels.index(signal_label)
-				except: self.channels.append(signal_label)
+
+				try:	self.channels.index(signal_label)
+				except:	self.channels.append(signal_label)
 
 			self.derivation_names[-1] = self.derivation_names[-1][1:]
 
@@ -65,7 +68,7 @@ class montage(object):
 
 		for channel in self.channels:
 			self.derivation_names.append(channel)
-			self.derivations.append([[channel, 1.]])
+			self.derivations.append([[channel, 1.]])		# channel name, weight
 
 			for other_channel in self.channels:
 
@@ -82,7 +85,7 @@ class montage(object):
 
 		try:		# check if all necessary channels, stored in 'self.channels' are available
 				# and also store the corresponding index in order to make derivation
-			for ch in self.channels:
+			for ch in self.channels:		# create hash table.
 				ch_dict[ch] = channel_names.index(ch)
 
 		except:
