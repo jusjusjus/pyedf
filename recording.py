@@ -68,7 +68,7 @@ class recording(edf_hdr_struct):
 
 		if self.verbose: print "# Loading from", start, "(= datapoint", n_start, "), ", n_duration, "datapoints of channels", channels
 
-		return self.read_physical_samples(channels, start=n_start, size=n_duration)
+		return samplingrate, self.read_physical_samples(channels, start=n_start, size=n_duration)
 
 
 	def __str__(self):
@@ -111,11 +111,12 @@ if __name__ == "__main__":
 
 
 	rec = recording(filename="/home/jus/Data/capslpdb/n5/n5.edf", verbose=0)
-	data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
+	fs, data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
+	t = np.arange(data.shape[1])/float(fs)
 
 	offset = 80
 	for (j, dat_j) in enumerate(data):
-		pylab.plot(dat_j-offset*j, 'k-')
+		pylab.plot(t, dat_j-offset*j, 'k-')
 
 	pylab.show()
 
