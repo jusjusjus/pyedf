@@ -62,6 +62,8 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
 		
+		self.patient = self.patient.strip(' ')
+
 		self.channelnames = [self.signalparam[i].label.strip(' ') for i in xrange(self.edfsignals)]
 		self.samplingrates = np.asarray([self.signalparam[i].smp_in_datarecord for i in xrange(self.edfsignals)])
 		self.channeltypes = np.asarray([channeltypes.get_type(self.signalparam[i]) for i in xrange(self.edfsignals)])

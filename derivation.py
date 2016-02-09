@@ -20,8 +20,9 @@ class derivation(recording):
 
 
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None):
+
 		X = recording.get_data(self, state_of_interest, start, end, duration, self.channelindices)
-		return np.dot(np.transpose(self.mixer[0]), X)
+		return np.dot(np.transpose(self.mixer[0]), X)	# X[derivation, time]
 
 
 
