@@ -21,6 +21,19 @@ class recording(edf_hdr_struct):
 			print "recording: Opening edf file", filename
 
 
+	def get_samplingrate(self, channels):
+
+		samplingrate = self.samplingrates[channels]
+		if np.iterable(samplingrate):
+			if not all(samplingrate == samplingrate[0]*np.ones((samplingrate.size), dtype=int)):	# If sampling rates are unqual ..
+				print "recording : Unqual sampling rates.", samplingrate
+				return None
+
+			samplingrate = samplingrate[0]
+
+		return samplingrate
+
+
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None, channels=None):
 
 		# Setup the channel information ..
@@ -34,13 +47,7 @@ class recording(edf_hdr_struct):
 			channels = np.arange(self.edfsignals)[self.channeltypes == theType]
 
 		# Check if all channels have the same sampling rate ..
-		samplingrate = self.samplingrates[channels]
-		if np.iterable(samplingrate):
-			if not all(samplingrate == samplingrate[0]*np.ones((samplingrate.size), dtype=int)):	# If sampling rates are unqual ..
-				print "recording : Unqual sampling rates.", samplingrate
-				return None
-
-			samplingrate = samplingrate[0]
+		samplingrate = self.get_samplingrate(channels)
 					
 
 		# Load the time information ..

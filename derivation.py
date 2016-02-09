@@ -19,10 +19,14 @@ class derivation(recording):
 		self.mixer = self.mtg.mixing_matrix(self.mtg.channels)
 
 
+	def get_samplingrate(self):
+		recording.get_samplingrate(self, self.channelindices)
+
+
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None):
 
-		X = recording.get_data(self, state_of_interest, start, end, duration, self.channelindices)
-		return np.dot(np.transpose(self.mixer[0]), X)	# X[derivation, time]
+		sampling_rate, X = recording.get_data(self, state_of_interest, start, end, duration, self.channelindices)
+		return sampling_rate, np.dot(np.transpose(self.mixer[0]), X)	# X[derivation, time]
 
 
 
