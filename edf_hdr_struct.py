@@ -14,6 +14,7 @@ except: lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
 
 
 EDFLIB_MAXSIGNALS = 256
+MD5_DIGEST_LENGTH = 16
 
 
 
@@ -55,9 +56,9 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 		("signalparam", edf_param_struct*EDFLIB_MAXSIGNALS)] 		# array of structs which contain the relevant signal parameters
 
 
-	def __init__(self, filename):
+	def __init__(self, filename, md5checksum=None):
 
-		lib.read_my_header(filename, self)
+		lib.read_my_header(filename, self, md5checksum)
 
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
@@ -96,6 +97,12 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 
 
 
+def read_md5(filename):
+	f = open(filename, 'r')
+	md5 = f.readline().strip('\n')
+	f.close()
+	return md5
+
 
 
 
@@ -113,7 +120,8 @@ if __name__ == "__main__":
 
 	import pylab
 
-	f = edf_hdr_struct(filename="example/sample.edf")
+	md5 = read_md5(filename="example/md5sum.txt")
+	f = edf_hdr_struct(filename="example/sample.edf", md5checksum=md5)
 	
 
 	START = 0

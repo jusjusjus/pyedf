@@ -12,9 +12,9 @@
 
 
 
-void read_my_header(char *filename, struct edf_hdr_struct *hdr)
+void read_my_header(char *filename, struct edf_hdr_struct *hdr, const char *md5checksum)
 {
-	if( edfopen_file_readonly(filename, hdr, EDFLIB_READ_ALL_ANNOTATIONS) )	// Open the file and read out the hdr info.
+	if( edfopen_file_readonly(filename, hdr, EDFLIB_READ_ALL_ANNOTATIONS, md5checksum) )	// Open the file and read out the hdr info.
 	{
 		switch(hdr->filetype)
 		{

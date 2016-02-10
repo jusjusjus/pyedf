@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
 import numpy as np
-from recording import recording
+from recording import recording, read_md5
 from montages import montage
 import xml.etree.ElementTree as xml
 
@@ -9,8 +9,8 @@ import xml.etree.ElementTree as xml
 
 class derivation(recording):
 
-	def __init__(self, edf_filename, montage_filename):
-		recording.__init__(self, edf_filename)
+	def __init__(self, edf_filename, montage_filename, md5checksum=None, verbose=0):
+		recording.__init__(self, edf_filename, md5checksum=md5checksum, verbose=verbose)
 		self.mtg = montage(montage_filename)
 
 		self.channelindices = [self.channelnames.index(channel)
@@ -37,14 +37,15 @@ if __name__ == "__main__":
 
 	import pylab
 
-	dx = derivation('example/sample.edf', 'example/sample.mtg')
+	md5 = read_md5(filename="example/md5sum.txt")
+	dx = derivation('example/sample.edf', 'example/sample.mtg', md5checksum=md5)
 
 
-	x = dx.get_data(start=0., duration=100.)
+	samplingrate, x = dx.get_data(start=0., duration=100.)
+	t = np.arange(x.shape[1])/float(samplingrate)
 
-	
 	for i in xrange(x.shape[0]):
-		pylab.plot(x[i]-30.*i)
+		pylab.plot(t, x[i]-30.*i)
 
 	pylab.show()
 

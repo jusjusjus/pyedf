@@ -11,7 +11,7 @@ struct edfhdrblock *hdrlist[EDFLIB_MAXFILES];		// Pointer to active files, inclu
 
 
 
-int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int read_annotations)
+int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int read_annotations, const char *md5checksum)
 {
 	int i, j, channel, edf_error;
 
@@ -27,6 +27,16 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 
 
 	file = fopeno(path, "rb");
+
+	
+	if(md5checksum != 0)
+	{
+		if( check_md5(file, md5checksum) )
+		{
+			printf("edfopen_file_readonly : %s corrupted!!!", path);
+			exit(-1);
+		}
+	}
 
 	hdr = edflib_check_edf_file(file, &edf_error);	// Allocates memory, and reads the header.
 
@@ -6078,31 +6088,38 @@ int edflib_atoi_nonlocalized(const char *str)
 
 
 
+int check_md5(FILE* file, const char *checksum)
+{
+	unsigned char mysum[MD5_DIGEST_LENGTH],			// Stores md5sum in hex
+		      mysum_char[2*MD5_DIGEST_LENGTH+1];	// Stores md5sum in char string, to compare with checksum.
+	int result;
+	MD5_CTX mdContext;
+	int bytes;
+	unsigned char data[1024];
 
+	MD5_Init (&mdContext);
 
+	while ((bytes = fread (data, 1, 1024, file)) != 0)
+		MD5_Update(&mdContext, data, bytes);
 
+	rewind(file);
 
+	MD5_Final(mysum, &mdContext);
 
+	snprintf(mysum_char, 1+2*MD5_DIGEST_LENGTH*sizeof(unsigned char),
+			"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+			mysum[0], mysum[1], mysum[2], mysum[3], mysum[4], mysum[5], mysum[6], mysum[7],
+			mysum[8], mysum[9], mysum[10], mysum[11], mysum[12], mysum[13], mysum[14], mysum[15]);
 
+	result = memcmp(checksum, mysum_char, sizeof(mysum_char)) != 0;
 
+	if(result)
+	{
+		printf("%s (provided checksum)\n", checksum);
+		printf("%s (my checksum)\n", mysum_char);
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return result;
+}
 
 

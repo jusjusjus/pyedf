@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from edf_hdr_struct import edf_hdr_struct
+from edf_hdr_struct import edf_hdr_struct, read_md5
 import state
 import montages
 import datetime
@@ -12,8 +12,8 @@ import datetime
 
 class recording(edf_hdr_struct):
 
-	def __init__(self, filename, verbose=0):
-		edf_hdr_struct.__init__(self, filename)
+	def __init__(self, filename, md5checksum=None, verbose=0):
+		edf_hdr_struct.__init__(self, filename, md5checksum=md5checksum)
 
 		self.verbose = verbose
 

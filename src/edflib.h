@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <openssl/md5.h>
 
 
 
@@ -209,7 +210,7 @@ int edflib_version(void); // Returns the version number of this library, multipl
 
 //  the following functions are used to read files
 
-int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int read_annotations);
+int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int read_annotations, const char *md5checksum);
 
 /* opens an existing file for reading */
 /* path is a null-terminated string containing the path to the file */
@@ -613,6 +614,7 @@ int edflib_sprint_int_number_nonlocalized(char *, int, int, int);
 int edflib_sprint_ll_number_nonlocalized(char *, long long, int, int);
 int edflib_fprint_int_number_nonlocalized(FILE *, int, int, int);
 int edflib_fprint_ll_number_nonlocalized(FILE *, long long, int, int);
+int check_md5(FILE* file, const char *checksum);
 
 #endif // EDFLIB_INCLUDED
 
