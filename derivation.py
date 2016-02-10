@@ -20,7 +20,7 @@ class derivation(recording):
 
 
 	def get_samplingrate(self):
-		recording.get_samplingrate(self, self.channelindices)
+		return recording.get_samplingrate(self, self.channelindices)
 
 
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None):

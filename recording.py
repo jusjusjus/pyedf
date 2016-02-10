@@ -47,7 +47,7 @@ class recording(edf_hdr_struct):
 			channels = np.arange(self.edfsignals)[self.channeltypes == theType]
 
 		# Check if all channels have the same sampling rate ..
-		samplingrate = self.get_samplingrate(channels)
+		samplingrate = recording.get_samplingrate(self, channels)
 					
 
 		# Load the time information ..
