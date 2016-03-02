@@ -117,9 +117,11 @@ if __name__ == "__main__":
 	dur = 200.
 
 
-	rec = recording(filename="/home/jus/Data/capslpdb/n5/n5.edf", verbose=0)
+	rec = recording(filename="/home/jus/Data/capslpdb/n4/n4.edf", verbose=0)
 	fs, data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
 	t = np.arange(data.shape[1])/float(fs)
+	print fs
+	exit(0)
 
 	offset = 80
 	for (j, dat_j) in enumerate(data):
