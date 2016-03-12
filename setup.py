@@ -1,15 +1,16 @@
 
 import setuptools
 
-edf_module = setuptools.Extension('lib/_edf', sources=['src/edf.c', 'src/edflib.c'])
+edf_module = setuptools.Extension('recording/lib/_edf',
+		sources=['recording/edf.c', 'recording/edflib.c'],
+		extra_compile_args=['-D_LARGEFILE64_SOURCE', '-D_LARGEFILE_SOURCE'])
 
 setuptools.setup(
 	name = "pyedf",
 	version = "0.0.2",
 	author = "Justus Schwabedal",
-	email = "jschwabedal@gmail.com",
 	license = "GPL",
-	packages = ['py'],
+	packages = ['recording', 'derivation', 'score'],
 	ext_modules = [edf_module])
 
 
