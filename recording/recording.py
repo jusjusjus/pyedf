@@ -3,8 +3,7 @@
 import numpy as np
 
 from edf_hdr_struct import edf_hdr_struct, read_md5
-import state
-import montages
+import score
 import datetime
 
 
@@ -52,7 +51,7 @@ class recording(edf_hdr_struct):
 
 		# Load the time information ..
 		# Start
-		if isinstance(state_of_interest, state.state):
+		if isinstance(state_of_interest, score.state):
 			start = state_of_interest
 			duration = state_of_interest.duration
 

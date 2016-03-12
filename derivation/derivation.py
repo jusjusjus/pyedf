@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+
 import numpy as np
 from recording import recording, read_md5
 from montages import montage
@@ -37,8 +38,8 @@ if __name__ == "__main__":
 
 	import pylab
 
-	md5 = read_md5(filename="example/md5sum.txt")
-	dx = derivation('example/sample.edf', 'example/sample.mtg', md5checksum=md5)
+	md5 = read_md5(filename="../../../example/md5sum.txt")
+	dx = derivation('../../../example/sample.edf', '../../../example/sample.mtg', md5checksum=md5)
 
 
 	samplingrate, x = dx.get_data(start=0., duration=100.)
