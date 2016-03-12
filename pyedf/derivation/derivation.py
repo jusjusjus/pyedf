@@ -2,7 +2,7 @@
 
 
 import numpy as np
-from recording import recording, read_md5
+from pyedf.recording import recording, read_md5
 from montages import montage
 import xml.etree.ElementTree as xml
 

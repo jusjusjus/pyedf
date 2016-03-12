@@ -3,7 +3,7 @@
 import numpy as np
 
 from edf_hdr_struct import edf_hdr_struct, read_md5
-import score
+import pyedf.score as score
 import datetime
 
 
