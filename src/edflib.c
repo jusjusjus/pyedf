@@ -33,7 +33,7 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 	{
 		if( check_md5(file, md5checksum) )
 		{
-#ifndef _WIN32
+#if defined(SSL)
 			printf("edfopen_file_readonly : %s corrupted!!!", path);
 #else
 			printf("edfopen_file_readonly : md5sum checkup not available for Windows.");
@@ -6094,7 +6094,7 @@ int edflib_atoi_nonlocalized(const char *str)
 
 int check_md5(FILE* file, const char *checksum)
 {
-#ifndef _WIN32
+#if defined(SSL)
 	unsigned char mysum[MD5_DIGEST_LENGTH],			// Stores md5sum in hex
 		      mysum_char[2*MD5_DIGEST_LENGTH+1];	// Stores md5sum in char string, to compare with checksum.
 	int result;

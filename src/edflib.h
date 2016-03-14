@@ -8,7 +8,7 @@
 #include <string.h>
 #include <time.h>
 
-#ifndef _WIN32
+#if defined(SSL)
 	#include <openssl/md5.h>
 #endif
 
