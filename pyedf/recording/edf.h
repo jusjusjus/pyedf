@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <openssl/md5.h>
 
 
 extern int files_open;

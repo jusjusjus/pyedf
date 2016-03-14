@@ -1,12 +1,17 @@
 
 import setuptools
+from sys import platform
 
+if platform == "linux" or platform == "linux2" or platform == "darwin":
+	link_args = ['-lssl', '-lcrypto']
 
+else:
+	link_args = []
 
 edf_module = setuptools.Extension('pyedf/recording/lib/_edf',
 		sources=['pyedf/recording/edf.c', 'pyedf/recording/edflib.c'],
 		extra_compile_args=['-D_LARGEFILE64_SOURCE', '-D_LARGEFILE_SOURCE'],
-		extra_link_args=['-lssl', '-lcrypto'])
+		extra_link_args=link_args)
 
 
 

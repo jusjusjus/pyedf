@@ -7,7 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <openssl/md5.h>
+
+#ifndef _WIN32
+	#include <openssl/md5.h>
+#endif
 
 
 
