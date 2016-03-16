@@ -5,12 +5,36 @@ import channeltypes
 import ctypes as ct
 import numpy as np
 import datetime
+import sys
 import os
 
 
+THISPATH = os.path.dirname(__file__)
 
-try: lib = ct.cdll.LoadLibrary( os.path.dirname(__file__)+'/lib/_edf.so' )
-except: lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
+
+if sys.platform == 'linux' or sys.platform == 'linux2':
+
+	if os.path.exists( THISPATH+'/lib/_edf.so' ):
+		lib = ct.cdll.LoadLibrary( THISPATH+'/lib/_edf.so' )
+
+	elif os.path.exists('lib/_edf.so'):
+		lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
+	
+	else:
+		print "Unable to load library _edf.so"
+		exit(0)
+
+
+
+elif sys.platform == 'win32':
+
+	if os.path.exists( THISPATH+'/_edf.dll' ):
+		lib = ct.windll.LoadLibrary( THISPATH+'/_edf.dll' )
+
+	else:
+		print "Unable to load library _edf.dll"
+		exit(0)
+
 
 
 EDFLIB_MAXSIGNALS = 256
