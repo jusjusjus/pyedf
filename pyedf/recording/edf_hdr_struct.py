@@ -130,7 +130,7 @@ def read_md5(filename):
 
 
 
-lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(edf_hdr_struct)]
+lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(edf_hdr_struct), ct.c_char_p]
 
 lib.read_physical_samples.argtypes = [ct.c_int, ct.POINTER(ct.c_int), ct.c_int, ct.c_int, ct.c_int, ct.POINTER(ct.c_double)]
 
