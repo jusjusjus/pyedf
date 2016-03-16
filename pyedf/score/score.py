@@ -34,6 +34,11 @@ class score(object):
 
 		if not self.states == None:
 			self.states = np.sort(self.states)
+			self.interpret_states()
+
+
+	def interpret_states(self):
+		pass
 
 
 	def isComment(self, line):
