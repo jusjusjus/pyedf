@@ -11,16 +11,13 @@ import re
 class score(object):
 
 	commentSymbol = '#'	# used for comments in state.annot
-	annotSeparator = '_'	# used as separators in state.annot
 	lineSeparator = ','	# used as separators in the line
 	states_dict = dict()
-	interpreter = dict()
-	statetypes = 0
 
 	def __init__(self, score_file=None, states=None, verbose=0):
 
 		self.verbose = verbose
-		self.declare()
+		self.states = []
 
 		if score_file:
 
@@ -30,21 +27,13 @@ class score(object):
 
 			self.states = self.load(score_file)
 			if self.verbose > 0: print "score: score file '%s' found." % (score_file)
-			if self.verbose == 2: print states
+			if self.verbose == 2: print "score: the states", self.states
+
 		else:
 			if self.verbose: print "# score: no score file given."
 
 		if not self.states == None:
 			self.states = np.sort(self.states)
-
-
-	def declare(self):
-
-		self.states = []	# contains all recognizable states
-		self.trash  = []	# contains states that could not be evaluated
-		self.epochs = dict()	# contains 'epoch' states
-		self.segments = dict()	# contains 'segments' states
-		self.events = []	# contains events, no duration
 
 
 	def isComment(self, line):
@@ -54,7 +43,8 @@ class score(object):
 		if line[0] == self.commentSymbol:	# if line starts with the commentSymbol, it is a comment ..
 			return True			# 					.. don't process it.
 
-		else: return False	# else: split the line at separators.
+		else:
+			return False	# else: split the line at separators.
 
 
 	def load(self, score_file_name):
@@ -104,11 +94,9 @@ class score(object):
 		self.states.append(new_state)
 
 
-
 	def __str__(self):
 
 		return '\n'.join([str(state) for state in self.states])
-
 
 
 	def select_by_function(self, function, **kwargs):
@@ -122,7 +110,6 @@ class score(object):
 		score_select = object.__new__(type(self))
 		score_select.__init__(states=selection)
 		return score_select
-	
 
 
 	def intersect(self, other_score):
