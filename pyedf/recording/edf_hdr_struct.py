@@ -10,6 +10,7 @@ import os
 
 
 THISPATH = os.path.dirname(__file__)
+if len(THISPATH) == 0: THISPATH = '.'
 
 
 if sys.platform == 'linux' or sys.platform == 'linux2':
@@ -144,8 +145,11 @@ if __name__ == "__main__":
 
 	import pylab
 
-	md5 = read_md5(filename="example/md5sum.txt")
-	f = edf_hdr_struct(filename="example/sample.edf", md5checksum=md5)
+	filename_md5 = THISPATH + "/../../example/md5sum.txt"
+	filename_edf = THISPATH + "/../../example/sample.edf"
+
+	#md5 = read_md5(filename=filename_md5)
+	f = edf_hdr_struct(filename=filename_edf, md5checksum=None)
 	
 
 	START = 0
