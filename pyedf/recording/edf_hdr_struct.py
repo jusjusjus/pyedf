@@ -9,32 +9,28 @@ import sys
 import os
 
 
+# Set up the path to the foreign library
 THISPATH = os.path.dirname(__file__)
-if len(THISPATH) == 0: THISPATH = '.'
+
+if len(THISPATH) == 0:
+	THISPATH = '.'
+
+libname = dict()
+libname['linux'] = THISPATH+'/lib/_edf.so'
+libname['linux2'] = libname['linux']
+libname['darwin'] = libname['linux']
+libname['win32'] = THISPATH+'/edf.dll' 
 
 
-if sys.platform == 'linux' or sys.platform == 'linux2':
+# Load the library
+if os.path.exists( libname[sys.platform] ):
+	lib = ct.cdll.LoadLibrary( libname[sys.platform] )
 
-	if os.path.exists( THISPATH+'/lib/_edf.so' ):
-		lib = ct.cdll.LoadLibrary( THISPATH+'/lib/_edf.so' )
-
-	elif os.path.exists('lib/_edf.so'):
-		lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
-	
-	else:
-		print "Unable to load library _edf.so"
-		exit(0)
+else:
+	raise ValueError
 
 
-
-elif sys.platform == 'win32':
-
-	if os.path.exists( THISPATH+'/_edf.dll' ):
-		lib = ct.windll.LoadLibrary( THISPATH+'/_edf.dll' )
-
-	else:
-		print "Unable to load library _edf.dll"
-		exit(0)
+###
 
 
 
