@@ -32,8 +32,8 @@ class score(object):
 		else:
 			if self.verbose: print "# score: no score file given."
 
-		if not self.states == None:
-			self.states = np.sort(self.states)
+		if np.iterable(states) :
+			self.states = np.sort(states)
 			self.interpret_states()
 
 
