@@ -5,12 +5,37 @@ import channeltypes
 import ctypes as ct
 import numpy as np
 import datetime
+import sys
 import os
 
 
+THISPATH = os.path.dirname(__file__)
+if len(THISPATH) == 0: THISPATH = '.'
 
-try: lib = ct.cdll.LoadLibrary( os.path.dirname(__file__)+'/lib/_edf.so' )
-except: lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
+
+if sys.platform == 'linux' or sys.platform == 'linux2':
+
+	if os.path.exists( THISPATH+'/lib/_edf.so' ):
+		lib = ct.cdll.LoadLibrary( THISPATH+'/lib/_edf.so' )
+
+	elif os.path.exists('lib/_edf.so'):
+		lib = ct.cdll.LoadLibrary( 'lib/_edf.so' )
+	
+	else:
+		print "Unable to load library _edf.so"
+		exit(0)
+
+
+
+elif sys.platform == 'win32':
+
+	if os.path.exists( THISPATH+'/_edf.dll' ):
+		lib = ct.windll.LoadLibrary( THISPATH+'/_edf.dll' )
+
+	else:
+		print "Unable to load library _edf.dll"
+		exit(0)
+
 
 
 EDFLIB_MAXSIGNALS = 256
@@ -106,7 +131,7 @@ def read_md5(filename):
 
 
 
-lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(edf_hdr_struct)]
+lib.read_my_header.argtypes = [ct.c_char_p, ct.POINTER(edf_hdr_struct), ct.c_char_p]
 
 lib.read_physical_samples.argtypes = [ct.c_int, ct.POINTER(ct.c_int), ct.c_int, ct.c_int, ct.c_int, ct.POINTER(ct.c_double)]
 
@@ -120,8 +145,11 @@ if __name__ == "__main__":
 
 	import pylab
 
-	md5 = read_md5(filename="example/md5sum.txt")
-	f = edf_hdr_struct(filename="example/sample.edf", md5checksum=md5)
+	filename_md5 = THISPATH + "/../../example/md5sum.txt"
+	filename_edf = THISPATH + "/../../example/sample.edf"
+
+	#md5 = read_md5(filename=filename_md5)
+	f = edf_hdr_struct(filename=filename_edf, md5checksum=None)
 	
 
 	START = 0
