@@ -3,6 +3,7 @@
 import numpy as np
 
 from edf_hdr_struct import edf_hdr_struct, read_md5
+import channeltypes
 import pyedf.score as score
 import datetime
 
@@ -20,7 +21,51 @@ class recording(edf_hdr_struct):
 			print "recording: Opening edf file", filename
 
 
+	def select_channels(self, channels=None):
+
+		if channels == None:	# Select all channels.
+			return np.arange(self.edfsignals)
+		
+		elif (not np.iterable(channels)) or (type(channels) == str):	# Wenn channels nicht indizierbar ist, oder ein String
+			channels = [channels]					# .. mach ne Liste draus.
+
+		channelindices = []
+		for channel in channels:
+
+			if type(channel) == np.typeDict['int']:
+				channelindices.append( channel )
+
+			elif type(channel) == np.typeDict['string']:
+
+				if channeltypes.is_channeltype(channel):									# if it is a channel type : 
+					channelindices.extend( np.arange(self.edfsignals)[self.channeltypes == channel] )	#		.. load all the channels.
+
+				else:
+					try:
+						channelindices.append( self.channelnames.index(channels) )
+					except:
+						print "channel '%s' not in List." % (channel)
+						print "Channels :", self.channelnames
+						raise AttributeError
+
+
+		if len(channelindices) == 0:
+			print "channellist empty.  Channels '%s' not understood." % (channels)
+			print "Possible Channels :", self.channelnames
+			raise AttributeError
+
+		return channelindices
+
+
+		# Setup the channel information ..
+		if not (channels == None or np.iterable(channels)):
+			print "recording : Parameter 'channels' not understood.", channels
+			raise AttributeError
+
+
 	def get_samplingrate(self, channels):
+
+		channels = self.select_channels(channels)
 
 		samplingrate = self.samplingrates[channels]
 
@@ -37,15 +82,7 @@ class recording(edf_hdr_struct):
 
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None, channels=None):
 
-		# Setup the channel information ..
-		if not (channels == None or np.iterable(channels)):
-			print "recording : Parameter 'channels' not understood.", channels
-			return None
-
-		theType = channels
-
-		if type(theType) == str:			# Load only those channels of type 'theType'.
-			channels = np.arange(self.edfsignals)[self.channeltypes == theType]
+		channels = self.select_channels(channels)
 
 		# Check if all channels have the same sampling rate ..
 		samplingrate = recording.get_samplingrate(self, channels)
