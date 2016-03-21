@@ -76,10 +76,14 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 		("annotations_in_file", ct.c_longlong),			# number of annotations in the file
 		("signalparam", edf_param_struct*EDFLIB_MAXSIGNALS)] 		# array of structs which contain the relevant signal parameters
 
+	opened = False
 
 	def __init__(self, filename, md5checksum=None):
 
+		assert os.path.exists(filename)
+
 		lib.read_my_header(filename, self, md5checksum)
+		self.opened = True
 
 		self.start = datetime.datetime(year=self.startdate_year, month=self.startdate_month, day=self.startdate_day,
 						hour=self.starttime_hour, minute=self.starttime_minute, second=self.starttime_second, microsecond=self.starttime_subsecond)
@@ -108,21 +112,38 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 
 
 	def close(self):
-		exitcode = lib.edf_close(self.handle)
-		if exitcode < 0: print "edf_hdr_struct : problems closing file."
+
+		if self.opened:
+			exitcode = lib.edf_close(self.handle)
+			self.opened = False
+
+			if exitcode < 0:
+				print "edf_hdr_struct : problems closing file."
 
 
 	def __del__(self):
-		self.close()
+
+		if self.opened:
+			self.close()
 
 
 
 
-def read_md5(filename):
+def read_md5(filename, separator=' '):
+
 	f = open(filename, 'r')
-	md5 = f.readline().strip('\n')
+	md5dict = dict()
+
+	for line in f:
+		line = line.split(separator)
+
+		md5sum = line[0].strip(' ')
+		filename_j = line[-1].strip('\n').strip(' ')
+		md5dict[filename_j] = md5sum
+
 	f.close()
-	return md5
+
+	return md5dict
 
 
 
@@ -141,7 +162,7 @@ if __name__ == "__main__":
 
 	import pylab
 
-	filename_md5 = THISPATH + "/../../example/md5sum.txt"
+	filename_md5 = THISPATH + "/../../example/sample.md5"
 	filename_edf = THISPATH + "/../../example/sample.edf"
 
 	#md5 = read_md5(filename=filename_md5)

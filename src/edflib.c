@@ -34,25 +34,25 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 		if( check_md5(file, md5checksum) )
 		{
 #if defined(SSL)
-			printf("edfopen_file_readonly : %s corrupted!!!", path);
+			printf("edfopen_file_readonly : File %s corrupted!!!  Exciting ..", path);
 #else
-			printf("edfopen_file_readonly : md5sum checkup not available for Windows.");
+			printf("edfopen_file_readonly : md5sum check unavailable.  Exiting ..");
 #endif
 			exit(-1);
 		}
 	}
 
-	hdr = edflib_check_edf_file(file, &edf_error);	// Allocates memory, and reads the header.
+	hdr = edflib_check_edf_file(file, &edf_error);	// Allocates memory, and reads the edf header.
 
 
 	hdr->writemode = 0;
 
-	for(i=0; i<EDFLIB_MAXFILES; i++)		// Locates the read header into the first free slot in hdrlist.
+	for(i=0; i<EDFLIB_MAXFILES; i++)		// Locates 'hdr' into the first free slot in hdrlist.
 	{
 		if(hdrlist[i] == NULL)
 		{
 			hdrlist[i] = hdr;
-			edfhdr->handle = i;		// Saves the location.
+			edfhdr->handle = i;		// Saves the location of 'hdr' in 'hdrlist'.
 			break;
 		}
 	}
@@ -79,14 +79,14 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 	{
 		strcpy(edfhdr->patient, hdr->patient);
 		strcpy(edfhdr->recording, hdr->recording);
-		edfhdr->patientcode[0] = 0;
-		edfhdr->gender[0] = 0;
-		edfhdr->birthdate[0] = 0;
+		edfhdr->patientcode[0]	= 0;
+		edfhdr->gender[0]	= 0;
+		edfhdr->birthdate[0]	= 0;
 		edfhdr->patient_name[0] = 0;
 		edfhdr->patient_additional[0] = 0;
-		edfhdr->admincode[0] = 0;
-		edfhdr->technician[0] = 0;
-		edfhdr->equipment[0] = 0;
+		edfhdr->admincode[0]	= 0;
+		edfhdr->technician[0]	= 0;
+		edfhdr->equipment[0]	= 0;
 		edfhdr->recording_additional[0] = 0;
 	}
 	else
@@ -181,6 +181,7 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 		edfhdr->signalparam[i].smp_in_datarecord = hdr->edfparam[channel].smp_per_record;
 	}
 
+
 	return 0;
 }
 
@@ -202,13 +203,15 @@ int edfclose_file(int handle)
 	struct edfhdrblock *hdr;
 
 
-	if(handle<0) return -1;
+	if(handle < 0) return -1;
 
 	if(handle >= EDFLIB_MAXFILES) return -1;
 
 	if(hdrlist[handle] == NULL)
 	{
-		printf("Error : hdrlist[handle] == NULL");
+		printf("Error : hdrlist[handle] == NULL\n");
+		printf("handle = %i\n", handle);
+		printf("files_open = %i\n", files_open);
 		return -1;
 	}
 
@@ -592,7 +595,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 
 	double phys_bitvalue;
 
-	long long smp_in_file, offset, samples_end, sample_pntr, smp_per_record, jump;
+	long long smp_in_file, offset, sample_pntr, smp_per_record, jump;
 
 	struct edfhdrblock *hdr;
 
@@ -617,7 +620,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 		return -1;
 	}
 
-	if(hdrlist[handle]==NULL)
+	if(hdrlist[handle] == NULL)
 	{
 		return -1;
 	}
@@ -688,8 +691,6 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 	fseeko(file, offset, SEEK_SET);
 
 	sample_pntr = hdr->edfparam[channel].sample_pntr;
-
-	samples_end = sample_pntr + n;
 
 	smp_per_record = hdr->edfparam[channel].smp_per_record;
 
@@ -767,7 +768,7 @@ int edfread_physical_samples(int handle, int edfsignal, int n, double *buf)
 
 	hdr->edfparam[channel].sample_pntr = sample_pntr;
 
-	return(n);
+	return n;
 }
 
 
@@ -779,7 +780,7 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 			i,
 			channel;
 
-	long long smp_in_file, offset, samples_end, sample_pntr, smp_per_record, jump;
+	long long smp_in_file, offset, sample_pntr, smp_per_record, jump;
 
 	struct edfhdrblock *hdr;
 
@@ -875,8 +876,6 @@ int edfread_digital_samples(int handle, int edfsignal, int n, int *buf)
 	fseeko(file, offset, SEEK_SET);
 
 	sample_pntr = hdr->edfparam[channel].sample_pntr;
-
-	samples_end = sample_pntr + n;
 
 	smp_per_record = hdr->edfparam[channel].smp_per_record;
 
@@ -6116,12 +6115,13 @@ int check_md5(FILE* file, const char *checksum)
 			mysum[0], mysum[1], mysum[2], mysum[3], mysum[4], mysum[5], mysum[6], mysum[7],
 			mysum[8], mysum[9], mysum[10], mysum[11], mysum[12], mysum[13], mysum[14], mysum[15]);
 
-	result = memcmp(checksum, mysum_char, sizeof(mysum_char)) != 0;
+	result = ( 0 != memcmp(checksum, mysum_char, sizeof(mysum_char)) );
 
 	if(result)
 	{
-		printf("%s (provided checksum)\n", checksum);
-		printf("%s (my checksum)\n", mysum_char);
+		printf("MD5-Checksums do not match :\n", checksum);
+		printf("%s (provided)\n", checksum);
+		printf("%s (computed)\n", mysum_char);
 	}
 
 	return result;

@@ -23,7 +23,9 @@ class recording(edf_hdr_struct):
 	def get_samplingrate(self, channels):
 
 		samplingrate = self.samplingrates[channels]
+
 		if np.iterable(samplingrate):
+
 			if not all(samplingrate == samplingrate[0]*np.ones((samplingrate.size), dtype=int)):	# If sampling rates are unqual ..
 				print "recording : Unqual sampling rates.", samplingrate
 				return None
