@@ -6094,8 +6094,8 @@ int edflib_atoi_nonlocalized(const char *str)
 int check_md5(FILE* file, const char *checksum)
 {
 #if defined(SSL)
-	unsigned char mysum[MD5_DIGEST_LENGTH],			// Stores md5sum in hex
-		      mysum_char[2*MD5_DIGEST_LENGTH+1];	// Stores md5sum in char string, to compare with checksum.
+	unsigned char	mysum[MD5_DIGEST_LENGTH];			// Stores md5sum in hex
+	char		mysum_char[2*MD5_DIGEST_LENGTH+1];	// Stores md5sum in char string, to compare with checksum.
 	int result;
 	MD5_CTX mdContext;
 	int bytes;
@@ -6119,7 +6119,7 @@ int check_md5(FILE* file, const char *checksum)
 
 	if(result)
 	{
-		printf("MD5-Checksums do not match :\n", checksum);
+		printf("MD5-Checksums do not match :\n");
 		printf("%s (provided)\n", checksum);
 		printf("%s (computed)\n", mysum_char);
 	}
