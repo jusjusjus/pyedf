@@ -24,7 +24,7 @@ class derivation(recording):
 		return recording.get_samplingrate(self, self.channelindices)
 
 
-	def get_data(self, state_of_interest=None, start=None, end=None, duration=None):
+	def get_data(self, state_of_interest=None, start=None, end=None, duration=None, channels=None):
 
 		sampling_rate, X = recording.get_data(self, state_of_interest, start, end, duration, self.channelindices)
 		return sampling_rate, np.dot(np.transpose(self.mixer[0]), X)	# X[derivation, time]

@@ -97,6 +97,17 @@ def get_type(channel):
 	return 'unknown'
 
 
+def is_channeltype(string):	# type : return True
+
+	for t in Types:
+		if string == t:
+			return True
+
+	return False
+
+
+
+
 if __name__=="__main__":
 
 	print get_type("T3-T5")
