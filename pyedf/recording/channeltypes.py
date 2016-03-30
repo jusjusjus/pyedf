@@ -2,7 +2,8 @@
 
 from edf_param_struct import edf_param_struct
 
-EEG_Channels = ['FP1',
+EEG_Channels = ['EEG',
+		'FP1',
 		'FP2',
 		'Fp1',
 		'Fp2',
@@ -38,7 +39,7 @@ EEG_Channels = ['FP1',
 		'T3-T5']
 
 EOG_Channels = ['ROC-LOC', 'LOC-ROC',
-		'EOG dx',
+		'EOG dx', 'EOG',
 		'ROC', 'ROC-A2', 'EOG-R',
 		'LOC', 'LOC-A1', 'EOG-L']
 
@@ -62,9 +63,9 @@ Leg_Channels = ['SX1-SX2',
 		'DX1-DX2', 'Dx1-DX2',
 		'DX1', 'DX2',
 		'SX1', 'SX2',
-		'TIB Dx', 'TIB Sx', 'tib sin', 'tib dx']
+		'Leg', 'TIB Dx', 'TIB Sx', 'tib sin', 'tib dx']
 
-EMG_Channels = ['EMG1-EMG2', 'EMG-EMG',
+EMG_Channels = ['EMG', 'EMG1-EMG2', 'EMG-EMG',
 		'EMG1', 'CHIN1',
 		'EMG2', 'CHIN2',
 		'deltoide', 'EMG']
