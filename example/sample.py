@@ -28,7 +28,7 @@ if THISPATH == '': THISPATH = '.'
 
 
 sample_edf   = THISPATH+'/sample.edf'
-sample_score = THISPATH+'/sample.csv'
+sample_score = THISPATH+'/sample-epochs.csv'
 sample_md5   = THISPATH+'/sample.md5'
 
 try:
@@ -77,7 +77,7 @@ print "TEST : score"
 print "############\n"
 
 try:
-	score = pyedf.score(score_file=sample_score, verbose=2)
+	score = pyedf.score(filename=sample_score, verbose=2)
 	print score
 	print TEST_PASSED
 except:
