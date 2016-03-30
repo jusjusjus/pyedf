@@ -27,7 +27,7 @@ if os.path.exists( libname[sys.platform] ):
 	lib = ct.cdll.LoadLibrary( libname[sys.platform] )
 
 else:
-	raise ImportError
+	raise ImportError('Unable to load library _edf.so')
 
 
 ###
