@@ -26,8 +26,7 @@ class event(datetime.datetime, object):
 
 	def __init__(self, time, annot='event'):
 
-		while annot[-1] == '\n': 
-			annot = annot[:-1]
+		annot = annot.strip('\n').strip('\r')	# Remove endline characters.
 
 		self.annot = annot
 

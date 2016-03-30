@@ -14,26 +14,26 @@ class score(object):
 	lineSeparator = ','	# used as separators in the line
 	states_dict = dict()
 
-	def __init__(self, score_file=None, states=None, verbose=0):
+	def __init__(self, filename=None, states=None, verbose=0):
 
 		self.verbose = verbose
 		self.states = []
 
-		if score_file:
+		if filename:
 
-			if os.path.exists(score_file) == False:
-				print "Score file %s does not exist." % (score_file)
+			if os.path.exists(filename) == False:
+				print "Score file %s does not exist." % (filename)
 				exit(0)
 
-			self.states = self.load(score_file)
-			if self.verbose > 0: print "score: score file '%s' found." % (score_file)
+			self.states = self.load(filename)
+			if self.verbose > 0: print "score: score file '%s' found." % (filename)
 			if self.verbose == 2: print "score: the states", self.states
 
 		else:
 			if self.verbose: print "# score: no score file given."
 
-		if not self.states == None:
-			self.states = np.sort(self.states)
+		if np.iterable(states) :
+			self.states = np.sort(states)
 			self.interpret_states()
 
 
@@ -52,9 +52,9 @@ class score(object):
 			return False	# else: split the line at separators.
 
 
-	def load(self, score_file_name):
+	def load(self, filename):
 
-		score_file = open(score_file_name, 'r') 
+		score_file = open(filename, 'r') 
 		states = []
 
 		for line in score_file:
@@ -82,10 +82,10 @@ class score(object):
 		return states
 
 
-	def save(self, score_file_name):
+	def save(self, filename):
 
-		print "# opening", score_file_name, "to write ..."
-		score_file = open(score_file_name, 'w')
+		print "# opening", filename, "to write ..."
+		score_file = open(filename, 'w')
 		string = '# start, duration, annotation\n'+self.__str__()
 		score_file.write(string)
 		score_file.close()
@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
 	score_filename = '../../example/sample.csv'
 
-	testscore = score(score_file=score_filename)
+	testscore = score(filename=score_filename)
 
 	print testscore
 	
