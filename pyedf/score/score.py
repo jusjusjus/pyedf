@@ -132,7 +132,7 @@ class Score(object):
 	def duration(self, annot=None):
 
 		if annot == None:
-			duration = np.sum([state.duration for state in states])
+			duration = np.sum([state.duration for state in self.states])
 
 		else:
 			duration = 0.0
