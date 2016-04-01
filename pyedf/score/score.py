@@ -129,6 +129,25 @@ class score(object):
 		return type(self)(states=intersection)
 
 
+	def duration(self, annot=None):
+
+		if annot == None:
+			duration = np.sum( [state.duration for state in self.states] )
+
+		else:
+			duration = 0.
+
+			for state in self.states:
+
+				if state.annot == annot:
+					duration += state.duration
+
+		return duration
+
+
+
+
+
 
 
 if __name__ == "__main__":
