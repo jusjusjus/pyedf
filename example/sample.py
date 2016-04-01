@@ -77,8 +77,8 @@ print "TEST : score"
 print "############\n"
 
 try:
-	score = pyedf.score(filename=sample_score, verbose=2)
-	print score
+	score = pyedf.score(filename=sample_score, verbose=0)
+	print score.states[0]
 	print TEST_PASSED
 except:
 	print TEST_FAILED
