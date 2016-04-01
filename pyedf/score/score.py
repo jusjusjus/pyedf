@@ -119,17 +119,14 @@ class score(object):
 
 	def intersect(self, other_score):
 
-		section = []
+		intersection = []
+
 		for state in self.states:
-	
-			for other in other_score.states:
 
-				sect_j = state.intersect(other, annot=state.annot)
-
-				if not sect_j == None:
-					section.append(sect_j)
+			section_j = state.intersect(other_score.states)
+			intersection.extend( section_j )
 	
-		return type(self)(states=section)
+		return type(self)(states=intersection)
 
 
 
