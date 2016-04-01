@@ -13,7 +13,7 @@ def mystrtime(timestring):
 
 
 
-class event(datetime.datetime, object):
+class Event(datetime.datetime, object):
 
 	def __new__(cls, time, annot='event'):
 
@@ -58,7 +58,7 @@ class event(datetime.datetime, object):
 
 
 
-
+event = Event
 
 
 

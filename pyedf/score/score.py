@@ -8,7 +8,7 @@ import re
 
 
 
-class score(object):
+class Score(object):
 
 	commentSymbol = '#'	# used for comments in state.annot
 	lineSeparator = ','	# used as separators in the line
@@ -129,6 +129,22 @@ class score(object):
 		return type(self)(states=intersection)
 
 
+	def duration(self, annot=None):
+
+		if annot == None:
+			duration = np.sum([state.duration for state in states])
+
+		else:
+			duration = 0.0
+
+			for state in self.states:
+
+				if state.annot == annot:
+					duration += state.duration
+
+		return duration
+
+
 	def count(self, annot=None):
 
 		if annot == None:
@@ -146,6 +162,7 @@ class score(object):
 
 
 
+score = Score
 
 
 

@@ -1,5 +1,5 @@
 #! /usr/bin/python
 
-from event import event, mystrtime
-from state import interval2state, state
-from score import score
+from event import event, mystrtime, Event
+from state import interval2state, state, State
+from score import score, Score
