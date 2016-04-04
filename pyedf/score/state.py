@@ -17,7 +17,7 @@ def interval2state(interval, sampling_rate, epoch_start, annot='new state'):
 
 
 
-class State(event.event, object):
+class State(event.Event):
 
 	MINIMUM_DURATION = 0.1 # sec.
 
@@ -28,7 +28,12 @@ class State(event.event, object):
 
 	def __init__(self, start, duration=None, endstring=None, annot='None'):
 
-		event.event.__init__(self, time=start, annot=annot)
+		super(State, self).__init__(time=start, annot=annot)
+
+		self.set_duration(duration=duration)
+	
+
+	def set_duration(self, duration):
 
 		if not duration == None:
 			self.duration = float(duration) # in seconds 
@@ -47,7 +52,7 @@ class State(event.event, object):
 
 	def __str__(self):
 
-		return event.event.__str__(self)+','+repr(self.duration)+','+self.annot
+		return event.Event.__str__(self)+','+repr(self.duration)+','+self.annot
 
 	
 	def __add__(self, other):
@@ -66,16 +71,16 @@ class State(event.event, object):
 
 	
 	def intersect(self, other, annot=None):
-		
+
 		if np.iterable(other):
 			result = []
 
 			for s in other:
-
 				section_s = self.intersect_state(s, annot)
 
 				if not section_s == None:
 					result.append( section_s )
+
 
 		else:
 			result = self.intersect_state(other, annot)
@@ -91,18 +96,23 @@ class State(event.event, object):
 		   self	 > other_state.end:
 		   return None
 
-		if self < other_state:		start = other_state
-		else:				start = self
+		if self < other_state:
+			start = other_state
+		else:
+			start = self
 
-		if self.end < other_state.end:	end = self.end
-		else:				end = other_state.end
-
-		if annot == None:	annot = self.annot
+		if self.end < other_state.end:
+			end = self.end
+		else:
+			end = other_state.end
 
 		duration = (end-start).total_seconds()
 
 		if duration < self.MINIMUM_DURATION:
 			return None
+
+		if annot == None:
+			annot = self.annot
 
 		return state(start=start, duration=duration, annot=annot)
 
