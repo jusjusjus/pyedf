@@ -6,7 +6,7 @@ from datetime import timedelta
 
 
 
-def interval2state(interval, sampling_rate, epoch_start, annot='new state'):
+def interval2state(interval, sampling_rate, epoch_start, annot=''):
 
 	assert len(interval) == 2
 
@@ -30,15 +30,15 @@ class State(event.Event):
 
 		super(State, self).__init__(time=start, annot=annot)
 
-		self.set_duration(duration=duration)
+		self.set_duration(duration=duration, endstring=endstring)
 	
 
-	def set_duration(self, duration):
+	def set_duration(self, duration=None, endstring=None):
 
 		if not duration == None:
 			self.duration = float(duration) # in seconds 
 
-		elif endstring:
+		elif not endstring == None:
 			self.duration = (event.mystrtime(endstring)-self).total_seconds()
 
 		else:
