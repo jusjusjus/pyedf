@@ -26,7 +26,7 @@ class recording(edf_hdr_struct):
 		if channels == None:	# Select all channels.
 			return np.arange(self.edfsignals)
 		
-		elif	(not np.iterable(channels)) or (type(channels) == np.typeDict['str']) or (type(channels) == str):# Wenn channels nicht indizierbar oder ein String ist, ..
+		elif not np.iterable(channels) or type(channels) == np.typeDict['str'] or type(channels) == str:	# Wenn channels nicht indizierbar oder ein String ist, ..
 			channels = [channels]										 #				.. dann mach ne Liste draus.
 
 		channelindices = []
