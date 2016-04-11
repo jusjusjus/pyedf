@@ -14,20 +14,24 @@ class derivation(recording):
 		recording.__init__(self, edf_filename, md5checksum=md5checksum, verbose=verbose)
 		self.mtg = montage(montage_filename)
 
-		self.channelindices = [self.channelnames.index(channel)
-					for channel in self.mtg.channels]			# Find the recording index of channels in the montage
-			
+		self.channelindices = np.asarray([self.channelnames.index(channel)
+							for channel in self.mtg.channels])			# Find the recording index of channels in the montage
+
 		self.mixer = self.mtg.mixing_matrix(self.mtg.channels)
 
 
 	def get_samplingrate(self):
-		return recording.get_samplingrate(self, self.channelindices)
+
+		return super(derivation, self).get_samplingrate(self.channelindices)
 
 
 	def get_data(self, state_of_interest=None, start=None, end=None, duration=None, channels=None):
 
-		sampling_rate, X = recording.get_data(self, state_of_interest, start, end, duration, self.channelindices)
-		return sampling_rate, np.dot(np.transpose(self.mixer[0]), X)	# X[derivation, time]
+		sampling_rate, X = super(derivation, self).get_data(state_of_interest, start, end, duration, self.channelindices)
+
+		Y = np.dot(np.transpose(self.mixer[0]), X)
+
+		return sampling_rate, Y 	# Y[derivation, time]
 
 
 
