@@ -39,7 +39,7 @@ EEG_Channels = ['EEG',
 		'T3-T5']
 
 EOG_Channels = ['EOG', 'EOG dx',
-i		'ROC-LOC', 'LOC-ROC',
+		'ROC-LOC', 'LOC-ROC',
 		'ROC', 'ROC-A2', 'EOG-R',
 		'LOC', 'LOC-A1', 'EOG-L']
 
