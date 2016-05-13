@@ -38,15 +38,15 @@ EEG_Channels = ['EEG',
 		'F7-T3',
 		'T3-T5']
 
-EOG_Channels = ['ROC-LOC', 'LOC-ROC',
-		'EOG dx', 'EOG',
+EOG_Channels = ['EOG', 'EOG dx',
+i		'ROC-LOC', 'LOC-ROC',
 		'ROC', 'ROC-A2', 'EOG-R',
 		'LOC', 'LOC-A1', 'EOG-L']
 
-ECG_Channels = ['ECG1-ECG2',
+ECG_Channels = ['ECG', 'EKG', 'ekg',
 		'ECG1',
 		'ECG2',
-		'ekg', 'EKG', 'ECG']
+		'ECG1-ECG2']
 
 HR_Channels = ['HR',
 	       'Heart Rate Varia']
@@ -59,21 +59,21 @@ Resp_Channels = ['PLETH', 'Pleth',
 
 BloodGas_Channels = ['SAO2', 'SpO2', 'Ox Status']
 
-Leg_Channels = ['SX1-SX2',
+Leg_Channels = ['TIB', 'Leg', 'TIB Dx', 'TIB Sx', 'tib sin', 'tib dx',
 		'DX1-DX2', 'Dx1-DX2',
 		'DX1', 'DX2',
 		'SX1', 'SX2',
-		'Leg', 'TIB Dx', 'TIB Sx', 'tib sin', 'tib dx']
+		'SX1-SX2']
 
 EMG_Channels = ['EMG', 'EMG1-EMG2', 'EMG-EMG',
 		'EMG1', 'CHIN1',
 		'EMG2', 'CHIN2',
 		'deltoide', 'EMG']
 
-Position_Channels = ['Posizione', 'Position',
-			'STAT']
+Position_Channels = ['Position', 'Posizione',
+		     'STAT']
 
-Snore_Channels = ['Sound', 'MIC']
+Snore_Channels = ['MIC', 'Sound']
 
 
 Types = dict(EEG=EEG_Channels, EOG=EOG_Channels, ECG=ECG_Channels,
@@ -91,6 +91,10 @@ def get_type(channel):
 		label = channel
 
 	for t in Types:
+
+		if t in label:	# Example:  label="EEG left channel", t="EEG".  returns true :)
+			return t
+
 		for ch in Types[t]:
 			if label == ch:
 				return t
