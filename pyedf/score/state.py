@@ -44,8 +44,8 @@ class State(event.Event):
 		else:
 			raise ValueError("start, duration, annot = %s, %s, %s" % (str(start), str(duration), str(annot)))
 
-		if self.duration < self.MINIMUM_DURATION:
-			raise ValueError("start, duration, annot = %s, %s, %s" % (str(start), str(duration), str(annot)))
+		#if self.duration < self.MINIMUM_DURATION:
+		#	raise ValueError("start, duration, annot = %s, %s, %s" % (str(start), str(duration), str(annot)))
 
 		self.compute_end()
 

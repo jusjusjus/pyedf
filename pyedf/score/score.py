@@ -23,7 +23,7 @@ class Score(object):
 
 			if os.path.exists(filename) == False:
 				print "Score file %s does not exist." % (filename)
-				exit(0)
+				raise AttributeError
 
 			self.states = self.load(filename)
 			if self.verbose > 0: print "score: score file '%s' found." % (filename)
@@ -63,10 +63,24 @@ class Score(object):
 				if self.isComment(line):
 					continue
 
+				line = line.strip('\n').strip('\r').strip(' ')
 				x = line.split(self.lineSeparator)
-				start = x[0].strip(' ')
-				duration = x[1].strip(' ')
-				annot = x[2].strip('\n').strip('\r').strip(' ')
+
+				if len(x) > 0:					# for example 1
+					start = x[0].strip(' ')
+
+				if len(x) == 1:
+					annot	 = ''
+					duration = ''
+
+				if len(x) == 2:
+					annot	 = x[1]
+					duration = ''
+
+				elif len(x) > 2:				# for example 3.
+					duration = x[1].strip(' ')
+					annot	 = x[2]
+
 
 				if duration == '':
 					duration = '-1'
