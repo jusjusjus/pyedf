@@ -17,7 +17,7 @@ class Score(object):
 	def __init__(self, filename=None, states=None, verbose=0):
 
 		self.verbose = verbose
-		self.states = []
+		self.states  = states
 
 		if filename:
 
@@ -32,9 +32,9 @@ class Score(object):
 		else:
 			if self.verbose: print "# score: no score file given."
 
-		if np.iterable(states) :
-			self.states = np.sort(states)
-			self.interpret_states()
+		#if np.iterable(self.states) :
+		#	self.states = np.sort(states)
+		#	self.interpret_states()
 
 
 	def interpret_states(self):
