@@ -101,7 +101,7 @@ class Score(object):
 		print "# opening", filename, "to write ..."
 		score_file = open(filename, 'w')
 		string = '# start, duration, annotation\n'+self.__str__()
-		score_file.write(string)
+		score_file.write(string + '\n')
 		score_file.close()
 
 

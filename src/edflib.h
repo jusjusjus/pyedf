@@ -59,6 +59,16 @@
 #define EDFLIB_MAXFILES 64
 #define EDFLIB_ANNOTATION_BYTES 114
 
+	
+
+#ifdef __APPLE__
+#define off64_t off_t
+#define fopen64 fopen
+#define fseeko64 fseeko
+#define ftello64 ftello
+#endif
+
+
 #define fseeko fseeko64
 #define ftello ftello64
 #define fopeno fopen64
