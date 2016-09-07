@@ -1,9 +1,10 @@
-#! /usr/bin/python
 
-print "# Welcome to the 'European Data Format'"
+from __future__ import print_function, absolute_import
 
-import recording.channeltypes as channeltypes
-from recording import recording, read_md5
-from derivation import derivation, montage
-from score import event, Event, state, State, score, Score, mystrtime, interval2state
+print("# Welcome to the 'European Data Format'")
+
+from .recording import recording, read_md5
+from .derivation import derivation, montage
+from .recording import channeltypes
+from .score import event, Event, state, State, score, Score, mystrtime, interval2state
 

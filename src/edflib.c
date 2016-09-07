@@ -35,10 +35,10 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 		{
 #if defined(SSL)
 			printf("edfopen_file_readonly : File %s corrupted!!!  Exciting ..", path);
-#else
-			printf("edfopen_file_readonly : md5sum check unavailable.  Exiting ..");
-#endif
 			exit(-1);
+#else
+			printf("edfopen_file_readonly : md5sum check unavailable.");
+#endif
 		}
 	}
 
