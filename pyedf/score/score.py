@@ -22,15 +22,15 @@ class Score(object):
 		if filename:
 
 			if os.path.exists(filename) == False:
-				print "Score file %s does not exist." % (filename)
+				print("Score file %s does not exist." % (filename))
 				raise AttributeError
 
 			self.states = self.load(filename)
-			if self.verbose > 0: print "score: score file '%s' found." % (filename)
-			if self.verbose == 2: print "score: the states", self.states
+			if self.verbose > 0: print("score: score file '%s' found." % (filename))
+			if self.verbose == 2: print("score: the states", self.states)
 
 		else:
-			if self.verbose: print "# score: no score file given."
+			if self.verbose: print("# score: no score file given.")
 
 		#if np.iterable(self.states) :
 		#	self.states = np.sort(states)
@@ -88,7 +88,7 @@ class Score(object):
 				states.append( st.state(start=start, duration=duration, annot=annot) )
 
 			except:
-				if self.verbose > 0: print "# line not readable:", line
+				if self.verbose > 0: print("# line not readable:", line)
 
 
 		score_file.close()
@@ -98,7 +98,7 @@ class Score(object):
 
 	def save(self, filename):
 
-		print "# opening", filename, "to write ..."
+		print("# opening", filename, "to write ...")
 		score_file = open(filename, 'w')
 		string = '# start, duration, annotation\n'+self.__str__()
 		score_file.write(string + '\n')
@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
 	testscore = score(filename=score_filename)
 
-	print testscore
+	print(testscore)
 	
 
 

@@ -128,5 +128,5 @@ if __name__=='__main__':
 	state_1 = State(event.datetime.datetime(year=2001, month=4, day=5, hour=1, minute=4), 600., annot='state 1')
 	#state_2 = State(event.datetime.datetime(year=2001, month=4, day=5, hour=1, minute=5), 600., annot='state 2')
 
-	print state_1+event.datetime.timedelta(seconds=1.)
+	print(state_1+event.datetime.timedelta(seconds=1.))
 
