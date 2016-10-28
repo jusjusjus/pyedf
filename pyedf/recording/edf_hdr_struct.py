@@ -80,7 +80,7 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 
 	def __init__(self, filename, md5checksum=None):
 
-		assert os.path.exists(filename)
+		assert os.path.exists(filename), "File '{}' does not exist.".format(filename)
 
 		lib.read_my_header(filename, self, md5checksum)
 		self.opened = True
