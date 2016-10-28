@@ -18,7 +18,7 @@ class recording(edf_hdr_struct):
 		self.verbose = verbose
 
 		if self.verbose:
-			print "recording: Opening edf file", filename
+			print("recording: Opening edf file", filename)
 
 
 	def select_channels(self, channels=None):
@@ -44,14 +44,14 @@ class recording(edf_hdr_struct):
 					try:
 						channelindices.append( self.channelnames.index(channel) )
 					except:
-						print "channel '%s' not in List." % (channel)
-						print "Channels :", self.channelnames
+						print("channel '%s' not in List." % (channel))
+						print("Channels :", self.channelnames)
 						raise AttributeError
 
 
 		if len(channelindices) == 0:
-			print "channellist empty.  Channels '%s' not understood." % (channels)
-			print "Possible Channels :", self.channelnames
+			print("channellist empty.  Channels '%s' not understood." % (channels))
+			print("Possible Channels :", self.channelnames)
 			raise AttributeError
 
 		return channelindices
@@ -59,7 +59,7 @@ class recording(edf_hdr_struct):
 
 		# Setup the channel information ..
 		if not (channels == None or np.iterable(channels)):
-			print "recording : Parameter 'channels' not understood.", channels
+			print("recording : Parameter 'channels' not understood.", channels)
 			raise AttributeError
 
 
@@ -72,7 +72,7 @@ class recording(edf_hdr_struct):
 		if np.iterable(samplingrate):
 
 			if not all(samplingrate == samplingrate[0]*np.ones((samplingrate.size), dtype=int)):	# If sampling rates are unqual ..
-				print "recording : Unqual sampling rates.", samplingrate
+				print("recording : Unqual sampling rates.", samplingrate)
 				return None
 
 			samplingrate = samplingrate[0]
@@ -101,7 +101,7 @@ class recording(edf_hdr_struct):
 			n_start = int(start * samplingrate)
 
 		else:
-			print "# start is not defined:", start
+			print("# start is not defined:", start)
 			raise ValueError
 
 		# n_duration
@@ -111,7 +111,7 @@ class recording(edf_hdr_struct):
 		if isinstance(duration, float):	# duration is given in seconds
 			n_duration = int(duration * float(samplingrate))
 
-		if self.verbose: print "# Loading from", start, "(= datapoint", n_start, "), ", n_duration, "datapoints of channels", channels
+		if self.verbose: print("# Loading from", start, "(= datapoint", n_start, "), ", n_duration, "datapoints of channels", channels)
 
 		return samplingrate, self.read_physical_samples(channels, start=n_start, size=n_duration)
 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 	rec = recording(filename="/home/jus/Data/capslpdb/n4/n4.edf", verbose=0)
 	fs, data = rec.get_data(start=rec.start, duration=dur, channels='EEG')
 	t = np.arange(data.shape[1])/float(fs)
-	print fs
+	print(fs)
 	exit(0)
 
 	offset = 80

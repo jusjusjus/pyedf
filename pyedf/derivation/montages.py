@@ -89,9 +89,9 @@ class montage(object):
 				ch_dict[ch] = channel_names.index(ch)
 
 		except:
-			print "mixing_matrix:  Not enough channels available for derivation", self.file_name
-			print "\tAvailable channels:\t", channel_names
-			print "\n\tMissing channel:\t", ch
+			print("mixing_matrix:  Not enough channels available for derivation", self.file_name)
+			print("\tAvailable channels:\t", channel_names)
+			print("\n\tMissing channel:\t", ch)
 			exit(-1)
 
 		mixer = np.zeros((N, M), float)
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 		chNames.append(ch)
 
 	chNames.pop(chNames.index('O2'))
-	print mtg.mixing_matrix(chNames)
+	print(mtg.mixing_matrix(chNames))
 
 
 

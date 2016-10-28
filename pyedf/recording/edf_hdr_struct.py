@@ -100,7 +100,7 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 		channels = np.asarray(channels)
 
 		if not channels.dtype == int:
-			print "edf_file : channels.dtype has to be integer."
+			print("edf_file : channels.dtype has to be integer.")
 			return None
 
 		channels = np.asarray(channels, dtype=np.int32)			# By default, it's int64 which will be converted to a long by ansi-c.
@@ -118,7 +118,7 @@ class edf_hdr_struct(ct.Structure):					# this structure contains all the releva
 			self.opened = False
 
 			if exitcode < 0:
-				print "edf_hdr_struct : problems closing file."
+				print("edf_hdr_struct : problems closing file.")
 
 
 	def __del__(self):
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
 	data = f.read_physical_samples(ch, START, SIZE)
 
-	print data
+	print(data)
 
 	pylab.plot(data[0])
 
@@ -183,7 +183,7 @@ if __name__ == "__main__":
 
 	del f
 
-	print 'exiting ..'
+	print('exiting ..')
 
 
 

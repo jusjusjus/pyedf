@@ -76,7 +76,7 @@ def mystrtime(timestring):
 			return dtime
 	
 	if dtime == None:
-		print "mystrtime::error : Unknown time string '"+timestring+"'"
+		print("mystrtime::error : Unknown time string '"+timestring+"'")
 
 	return None
 
@@ -123,7 +123,7 @@ class Event(datetime.datetime, object):
 
 
 	def time_since(self, start): # time of event since 'start'
-		print "obsolete.  Use timeSince() instead"
+		print("obsolete.  Use timeSince() instead")
 		return self.timeSince(start)
 
 
@@ -138,5 +138,5 @@ if __name__=='__main__':
 	event_1 = event(datetime.datetime(year=2001, month=4, day=5))
 	event_2 = event(datetime.datetime(year=2001, month=4, day=6))
 
-	print event_2.timeSince(event_1), 'seconds'
-	print event_2+datetime.timedelta(seconds=1.), 'seconds'
+	print(event_2.timeSince(event_1), 'seconds')
+	print(event_2+datetime.timedelta(seconds=1.), 'seconds')

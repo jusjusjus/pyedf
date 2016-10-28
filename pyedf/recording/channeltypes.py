@@ -115,4 +115,4 @@ def is_channeltype(string):	# type : return True
 
 if __name__=="__main__":
 
-	print get_type("T3-T5")
+	print(get_type("T3-T5"))

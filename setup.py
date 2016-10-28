@@ -49,11 +49,11 @@ def ssl_available():
 			libraries=libraries)
 
 	except CompileError:
-		print 'libssl compile error.'
+		print('libssl compile error.')
 		ret_val = False
 
 	except LinkError:
-		print 'libssl link error.'
+		print('libssl link error.')
 		ret_val = False
 
 	else:
@@ -85,7 +85,7 @@ if ssl_available():
 	compile_args.append('-DSSL')
 	link_args.extend(['-lssl', '-lcrypto'])
 
-	print "Compiling with SSL support."
+	print("Compiling with SSL support.")
 
 
 
