@@ -21,6 +21,7 @@ class Score(object):
     def __init__(self, filename=None, states=[], verbose=0):
         self.logger.debug("__init__(filename={}, num_states={})".format(filename, states))
         self.verbose = verbose
+        self.states = []
         self.set_states(states)
         self.filename = filename
 
@@ -35,7 +36,8 @@ class Score(object):
 
 
     def set_states(self, states):
-        self.states = states
+        for state in states:
+            self.states.append(state)
 
 
     def interpret_states(self):
