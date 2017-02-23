@@ -104,8 +104,10 @@ class Score(object):
 
 
     def __str__(self):
-
-        return '\n'.join([str(state) for state in self.states])
+        if hasattr(self, 'states'):
+            return '\n'.join([str(state) for state in self.states])
+        else:
+            return 'Score'
 
 
     def select_by_function(self, function, **kwargs):
