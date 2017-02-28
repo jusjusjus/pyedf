@@ -88,7 +88,7 @@ struct edfparamblock{
         char   prefilter[81];
         int    smp_per_record;
         char   reserved[33];
-        int    offset;
+        double offset;
         int    buf_offset;
         double bitvalue;
         int    annotation;

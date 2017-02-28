@@ -2385,7 +2385,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 		else	n += edfhdr->edfparam[i].smp_per_record * 2;
 
 		edfhdr->edfparam[i].bitvalue = (edfhdr->edfparam[i].phys_max - edfhdr->edfparam[i].phys_min) / (edfhdr->edfparam[i].dig_max - edfhdr->edfparam[i].dig_min);
-		edfhdr->edfparam[i].offset = (int)(edfhdr->edfparam[i].phys_max / edfhdr->edfparam[i].bitvalue - edfhdr->edfparam[i].dig_max);
+		edfhdr->edfparam[i].offset = edfhdr->edfparam[i].phys_max / edfhdr->edfparam[i].bitvalue - edfhdr->edfparam[i].dig_max;
 	}
 
 	edfhdr->file_hdl = inputfile;
