@@ -34,7 +34,7 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 		if( check_md5(file, md5checksum) )
 		{
 #if defined(SSL)
-			printf("edfopen_file_readonly : File %s corrupted!!!  Exciting ..", path);
+			printf("edfopen_file_readonly : File %s corrupted!!!  Exiting ..", path);
 			exit(-1);
 #else
 			printf("edfopen_file_readonly : md5sum check unavailable.");
@@ -43,6 +43,10 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 	}
 
 	hdr = edflib_check_edf_file(file, &edf_error);	// Allocates memory, and reads the edf header.
+	if(hdr == NULL)
+	{
+		printf("Invalid file.  Error code: %i.\n", edf_error);
+	}
 
 
 	hdr->writemode = 0;
@@ -77,6 +81,8 @@ int edfopen_file_readonly(const char *path, struct edf_hdr_struct *edfhdr, int r
 
 	if( (!(hdr->edfplus)) && (!(hdr->bdfplus)) )
 	{
+		edflib_latin1_to_ascii(edfhdr->patient, 81);
+		edflib_latin1_to_ascii(edfhdr->recording, 81);
 		strcpy(edfhdr->patient, hdr->patient);
 		strcpy(edfhdr->recording, hdr->recording);
 		edfhdr->patientcode[0]	= 0;
@@ -1092,6 +1098,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 				*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 				free(edf_hdr);
 				free(edfhdr);
+				printf("File contains latin1 characters.\n");
 				return(NULL);
 			}
 		}
@@ -1122,6 +1129,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'patientname' contains latin1 characters.\n");
 			return(NULL);
 		}
 	}
@@ -1140,6 +1148,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'recording' contains latin1 characters.\n");
 			return(NULL);
 		}
 	}
@@ -1158,6 +1167,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'startdate' contains latin1 characters.\n");
 			return(NULL);
 		}
 	}
@@ -1165,12 +1175,12 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 	error = 0;
 
 	if((edf_hdr[170]!='.')||(edf_hdr[173]!='.'))	error = 1;
-	if((edf_hdr[168]<48)||(edf_hdr[168]>57))			error = 1;
-	if((edf_hdr[169]<48)||(edf_hdr[169]>57))			error = 1;
-	if((edf_hdr[171]<48)||(edf_hdr[171]>57))			error = 1;
-	if((edf_hdr[172]<48)||(edf_hdr[172]>57))			error = 1;
-	if((edf_hdr[174]<48)||(edf_hdr[174]>57))			error = 1;
-	if((edf_hdr[175]<48)||(edf_hdr[175]>57))			error = 1;
+	if((edf_hdr[168]<48)||(edf_hdr[168]>57))	error = 1;
+	if((edf_hdr[169]<48)||(edf_hdr[169]>57))	error = 1;
+	if((edf_hdr[171]<48)||(edf_hdr[171]>57))	error = 1;
+	if((edf_hdr[172]<48)||(edf_hdr[172]>57))	error = 1;
+	if((edf_hdr[174]<48)||(edf_hdr[174]>57))	error = 1;
+	if((edf_hdr[175]<48)||(edf_hdr[175]>57))	error = 1;
 	strncpy(scratchpad, edf_hdr + 168, 8);
 
 	if(error)
@@ -1179,6 +1189,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 		*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 		free(edf_hdr);
 		free(edfhdr);
+		printf("'startdate' is not a valid date.\n");
 		return(NULL);
 	}
 
@@ -1229,6 +1240,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'starttime' seems to be latin1.\n");
 			return(NULL);
 		}
 	}
@@ -1310,6 +1322,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'number of signals' seems to be latin1.\n");
 			return(NULL);
 		}
 	}
@@ -1350,6 +1363,7 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 			*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
 			free(edf_hdr);
 			free(edfhdr);
+			printf("'number of bytes' seems to be latin1.\n");
 			return(NULL);
 		}
 	}
@@ -1627,17 +1641,19 @@ struct edfhdrblock * edflib_check_edf_file(FILE *inputfile, int *edf_error)
 	for(i=0; i<edfhdr->edfsignals; i++)
 	{
 		strncpy(scratchpad, edf_hdr + 256 + (edfhdr->edfsignals * 96) + (i * 8), 8);
-		for(j=0; j<8; j++)
-		{
-			if((scratchpad[j]<32)||(scratchpad[j]>126))
-			{
-				*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS;
-				free(edf_hdr);
-				free(edfhdr->edfparam);
-				free(edfhdr);
-				return(NULL);
-			}
-		}
+		/* for(j=0; j<8; j++) */
+		/* { */
+		/* 	if((scratchpad[j]<32)||(scratchpad[j]>126)) */
+		/* 	{ */
+		/* 		*edf_error = EDFLIB_FILE_CONTAINS_FORMAT_ERRORS; */
+		/* 		free(edf_hdr); */
+		/* 		free(edfhdr->edfparam); */
+		/* 		free(edfhdr); */
+		/* 		printf("'physdimension' seems to contain latin1.\n"); */
+		/* 		return(NULL); */
+		/* 	} */
+		/* } */
+		edflib_latin1_to_ascii(edf_hdr + 256 + (edfhdr->edfsignals * 96) + (i * 8), 8);
 		strncpy(edfhdr->edfparam[i].physdimension, edf_hdr + 256 + (edfhdr->edfsignals * 96) + (i * 8), 8);
 		edfhdr->edfparam[i].physdimension[8] = 0;
 	}
